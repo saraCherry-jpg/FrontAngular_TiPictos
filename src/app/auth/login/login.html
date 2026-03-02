@@ -1,0 +1,67 @@
+<div class="login-container">
+
+  <div class="login-card" [class.zoom]="isLoading">
+
+    <!-- Botón modo oscuro -->
+    <div class="theme-toggle-inside">
+      <i class="bi"
+         [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"
+         (click)="toggleTheme()">
+      </i>
+    </div>
+
+    <!-- Agrego el logo (literalmente las imagenes) seran animadas mas delante -->
+    <!-- CORRECIÓN MAS DELANTE-->
+    <div class="image-frame">
+      <img src="assets/imagenes/TiPictosLogo.png" class="frame frame1" alt="TiPictos Logo">
+      <img src="assets/imagenes/logoAni1.png" class="frame frame2" alt="Logo Animado">
+    </div>
+
+    <h1 class="logo">TiPictos</h1>
+    <h2>Iniciar Sesión</h2>
+
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <div class="input-group">
+        <input 
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          placeholder="Correo electrónico">
+      </div>
+
+      <div class="input-group">
+        <input 
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          placeholder="Contraseña">
+      </div>
+
+
+      <!-- Todos los botones del Login-->
+
+      <!-- Botón entrar o iniciar -->
+      <button type="submit" [disabled]="loginForm.invalid || isLoading">
+        {{ isLoading ? 'Cargando...' : 'Iniciar' }}
+      </button>
+
+    </form>
+
+    <!-- Boton de Registro (Nuevo Usuario) -->
+    <div class="extra-actions">
+      <button type="button" class="secondary-btn" (click)="goToRegister()">
+        Registrar
+      </button>
+
+      <!-- Boton de salir -->
+      <button type="button" class="danger-btn" (click)="exit()">
+        Salir
+      </button>
+    </div>
+
+  </div>
+
+</div>

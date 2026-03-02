@@ -1,0 +1,91 @@
+.profile-container {
+  color: var(--color-text);
+}
+
+/* HEADER */
+.profile-header {
+  position: relative;
+  text-align: center;
+}
+
+.cover {
+  height: 220px;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+}
+
+.profile-info {
+  margin-top: -70px;
+  padding: 20px;
+}
+
+/* AVATAR */
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 4px solid var(--color-background);
+  object-fit: cover;
+  background: white;
+}
+
+/* USERNAME */
+.username {
+  color: var(--color-accent);
+  margin-top: -10px;
+}
+
+/* BIO */
+.bio {
+  max-width: 500px;
+  margin: 10px auto;
+}
+
+/* BOTONES */
+.profile-actions {
+  margin-top: 15px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  border: none;
+  padding: 10px 18px;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  border: none;
+  padding: 10px 18px;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* GRID TIPO PINTEREST */
+.posts-grid {
+  column-count: 3;
+  column-gap: 15px;
+  padding: 20px;
+}
+
+.post-card {
+  margin-bottom: 15px;
+  break-inside: avoid;
+}
+
+.post-card img {
+  width: 100%;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.post-card img:hover {
+  transform: scale(1.05);
+}

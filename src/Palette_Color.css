@@ -1,0 +1,33 @@
+/*
+ESTILO Y PALETAS DE COLORES QUE VAMOS A USAR
+
+*/
+
+
+:root{
+    --color-primary: #249599;
+    --color-primary-dark: #66D7DB;
+
+    --color-secondary: #9a14a9;
+    --color-secondary-dark: #dc56eb;
+
+    
+    --color-background: #b2b2e6;
+    --color-background-dark: #19194d;
+
+
+    --color-text: #1b1792;
+    --color-text-dark: #726de8;
+
+
+    --color-accent: #7a177d;
+    --color-accent-dark: #e582e8;
+
+}
+
+/* ESTETICA DEL BODY */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background); /*Aqui podemos modificar el color, siempre y cuando sea necesario*/
+}

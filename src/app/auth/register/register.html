@@ -1,0 +1,72 @@
+<div class="login-container">
+
+  <div class="login-card" [class.zoom]="isLoading">
+
+    <!-- Botón modo oscuro -->
+    <div class="theme-toggle-inside">
+      <i class="bi"
+         [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"
+         (click)="toggleTheme()">
+      </i>
+    </div>
+
+    <!-- En esta parte se pretende agregar el logo tipo animado con 2 imagenes-->
+
+    <h1 class="logo">TiPictos</h1>
+    <h2>Crear Cuenta</h2>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+
+      <div class="input-group">
+        <input 
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          required
+          placeholder="Nombre completo">
+      </div>
+
+      <div class="input-group">
+        <input 
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          placeholder="Correo electrónico">
+      </div>
+
+      <div class="input-group">
+        <input 
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          placeholder="Contraseña">
+      </div>
+
+      <div class="input-group">
+        <input 
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          required
+          placeholder="Confirmar contraseña">
+      </div>
+
+      <!-- Botones del regirstro-->
+      <button type="submit" [disabled]="registerForm.invalid || isLoading">
+        {{ isLoading ? 'Registrando...' : 'Registrar' }}
+      </button>
+
+    </form>
+
+    <!-- Esta registrado previamiente asi que te devuelve al login para que inicies sesion -->
+    <div class="extra-actions">
+      <button type="button" class="secondary-btn" (click)="goToLogin()">
+        Tengo una cuenta
+      </button>
+    </div>
+
+  </div>
+
+</div>

@@ -1,1 +1,72 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+/*
+ESTILO Y PALETAS DE COLORES QUE VAMOS A USAR
+Segun la paleta de colores de la interfaz
+*/
+
+/*@import 'node_modules/bootstrap-icons/font/bootstrap-icons.css';*/
+
+:root{
+
+    /*MODO CLARO/ LUZ */
+    --color-primary: #249599;
+    --color-secondary: #9a14a9;
+    --color-background: #b2b2e6;
+    --color-text: #1b1792;
+    --color-accent: #7a177d;
+   
+
+    /*MODO OSCURO/ DARK */
+    --color-primary-dark: #66D7DB;
+    --color-secondary-dark: #dc56eb;
+    --color-background-dark: #19194d;
+    --color-text-dark: #726de8;
+     --color-accent-dark: #e582e8;
+
+
+
+}
+
+/* ESTETICA DEL BODY */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background); /*Aqui podemos modificar el color, siempre y cuando sea necesario*/
+}
+
+/* ACTIVADOR MODO OSCURO */
+body.dark-mode {
+  --color-primary: var(--color-primary-dark);
+  --color-secondary: var(--color-secondary-dark);
+  --color-background: var(--color-background-dark);
+  --color-text: var(--color-text-dark);
+  --color-accent: var(--color-accent-dark);
+}
+
+/*Activador MODO CLARO*/
+body.light-mode {
+  --color-primary: #249599;
+    --color-secondary: #9a14a9;
+    --color-background: #b2b2e6;
+    --color-text: #1b1792;
+    --color-accent: #7a177d;
+}
+
+/*___________________________________ alteracción reciente de la animacion ____________*/
+/*PARTE DE LA ANIMACIÓN*/
+/* Si quieres controlar la velocidad globalmente */
+:root {
+  --animation-speed: 3s;  /* Puedes cambiar este valor */
+}
+
+.frame1 {
+  opacity: 1;
+  animation: fadeOutIn1 var(--animation-speed) infinite;
+}
+
+.frame2 {
+  opacity: 0;
+  animation: fadeOutIn2 var(--animation-speed) infinite;
+}

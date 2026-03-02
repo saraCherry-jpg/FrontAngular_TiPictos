@@ -1,0 +1,169 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL
+========================================= */
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-background);
+  position: relative;
+}
+
+
+/* =========================================
+   TARJETA REGISTER
+========================================= */
+
+.login-card {
+  position: relative;
+  background: var(--color-background);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 380px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+
+/* =========================================
+   LOGO Y TITULO
+========================================= */
+
+.logo {
+  font-size: 60px;
+  color: var(--color-primary);
+  margin-bottom: 5px;
+
+  line-height: 1;
+}
+
+h2 {
+  color: var(--color-text);
+  margin-bottom: 25px;
+
+  margin-top: 0;
+  font-size: 24px;
+  font-weight: 500;
+
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.input-group {
+  margin-bottom: 16px; /* Espacio consistente entre inputs */
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--color-secondary);
+  outline: none;
+  transition: 0.3s;
+  background: white;
+  color: var(--color-text);
+
+  /*con eso hace que se empareje o aline los componentes*/
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Ajuste automático modo oscuro */
+body.dark-mode input {
+  background: #2a2a5e;
+  color: white;
+}
+
+
+/* =========================================
+   BOTÓN PRINCIPAL (registrar)
+========================================= */
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+
+  width: auto;             /* Cambiar de 100% a auto */
+  min-width: 180px;        /* Un ancho mínimo para que se vea proporcionado */
+  padding: 12px 24px;       /* Padding más horizontal */
+  margin: 0 auto;          /* Asegurar centrado */
+
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================================
+   BOTÓN SECUNDARIO (Ir a Login) (Tengo una cuenta)
+========================================= */
+
+.extra-actions {
+  margin-top: 20px;
+  display: flex;           /* Añadir flexbox */
+  justify-content: center; /* Centrar el botón */
+  width: 100%;             /* Asegurar que ocupa todo el ancho */
+}
+
+.secondary-btn {
+  background: var(--color-secondary);
+  color: white;
+  width: auto;             /* Cambiar de 100% a auto */
+  min-width: 180px;        /* Un ancho mínimo para que se vea proporcionado */
+  padding: 12px 24px;       /* Padding más horizontal */
+  margin: 0 auto;          /* Asegurar centrado */
+}
+
+.secondary-btn:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================================
+   BOTÓN CAMBIO DE TEMA
+========================================= */
+
+.theme-toggle-inside {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--color-primary);
+  transition: 0.3s;
+  z-index: 10;
+}
+
+.theme-toggle-inside:hover {
+  transform: scale(1.2);
+}
+
+
+/* =========================================
+   ANIMACIÓN
+========================================= */
+
+.zoom {
+  transform: scale(1.05);
+}

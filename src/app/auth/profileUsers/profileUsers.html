@@ -1,0 +1,34 @@
+<div class="profile-container">
+
+  <!-- HEADER CON PORTADA -->
+  <div class="profile-header">
+    <div class="cover"></div>
+
+    <div class="profile-info">
+      <img src="assets/imagenes/avatar.jpg" class="avatar" />
+
+      <h2>Sr Saorin</h2>
+      <p class="username">@saorinaalter</p>
+
+      <p class="bio">
+        Subo cosas, casi siempre subo cosas que pienso.
+        Otras veces, cosas que siento.
+      </p>
+
+      <div class="profile-actions">
+        <button class="btn-primary">Editar Perfil</button>
+        <button class="btn-secondary" (click)="toggleTheme()">
+          Cambiar Modo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE POSTS -->
+  <div class="posts-grid">
+    <div class="post-card" *ngFor="let post of posts">
+      <img [src]="post.image" />
+    </div>
+  </div>
+
+</div>
