@@ -1,29 +1,40 @@
+<!--<h1 style="color:red">TEST CSS</h1> para pruebas -->
+
 <div class="login-container">
+  <!-- ANIMACIÓN -->
+  <div class="login-animated-background"></div> <!-- a ver-->
 
   <div class="login-card" [class.zoom]="isLoading">
 
-    <!-- Botón modo oscuro -->
-    <div class="theme-toggle-inside">
+    <!-- BOTON MODO OSCURO -->
+    <div class="login-theme-toggle">
       <i class="bi"
          [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"
          (click)="toggleTheme()">
       </i>
     </div>
 
-    <!-- Agrego el logo (literalmente las imagenes) seran animadas mas delante -->
-    <!-- CORRECIÓN MAS DELANTE-->
-    <div class="image-frame">
-      <img src="assets/imagenes/TiPictosLogo.png" class="frame frame1" alt="TiPictos Logo">
-      <img src="assets/imagenes/logoAni1.png" class="frame frame2" alt="Logo Animado">
+    <!-- LOGO ANIMADO -->
+    <div class="login-logo-frame">
+      <img src="assets/imagenes/TiPictosLogo.png"
+           class="login-logo-frame1"
+           alt="TiPictos Logo">
+
+      <img src="assets/imagenes/logoAni1.png"
+           class="login-logo-frame2"
+           alt="Logo Animado">
     </div>
 
-    <h1 class="logo">TiPictos</h1>
-    <h2>Iniciar Sesión</h2>
+    <!-- TITULO -->
+    <!-- <h1 class="login-title">TiPictos</h1> -->
+    <h2 class="login-subtitle">Iniciar Sesión</h2>
 
-    <form (ngSubmit)="login()" #loginForm="ngForm">
 
-      <div class="input-group">
-        <input 
+    <!-- FORMULARIO -->
+    <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
+
+      <div class="login-input-group">
+        <input
           type="email"
           name="email"
           [(ngModel)]="email"
@@ -31,37 +42,52 @@
           placeholder="Correo electrónico">
       </div>
 
-      <div class="input-group">
-        <input 
-          type="password"
+      <!-- PASSWORD CON ICONO DE OJO -->
+      <div class="login-input-group login-password-group">
+
+        <input
+          [type]="showPassword ? 'text' : 'password'"
           name="password"
           [(ngModel)]="password"
           required
           placeholder="Contraseña">
+
+        <i class="bi"
+           [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"
+           (click)="togglePassword()">
+        </i>
+
       </div>
 
+      <!-- BOTON PRINCIPAL -->
+      <button
+        type="submit"
+        class="login-btn"
+        [disabled]="loginForm.invalid || isLoading">
 
-      <!-- Todos los botones del Login-->
-
-      <!-- Botón entrar o iniciar -->
-      <button type="submit" [disabled]="loginForm.invalid || isLoading">
         {{ isLoading ? 'Cargando...' : 'Iniciar' }}
-      </button>
 
+      </button>
     </form>
 
-    <!-- Boton de Registro (Nuevo Usuario) -->
-    <div class="extra-actions">
-      <button type="button" class="secondary-btn" (click)="goToRegister()">
+
+    <!-- BOTONES SECUNDARIOS -->
+    <div class="login-actions">
+
+      <button
+        type="button"
+        class="login-btn-secondary"
+        (click)="goToRegister()">
         Registrar
       </button>
 
-      <!-- Boton de salir -->
-      <button type="button" class="danger-btn" (click)="exit()">
+      <button
+        type="button"
+        class="login-btn-danger"
+        (click)="exit()">
         Salir
       </button>
+
     </div>
-
   </div>
-
 </div>

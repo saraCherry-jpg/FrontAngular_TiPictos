@@ -10,7 +10,7 @@ Segun la paleta de colores de la interfaz
 
 :root{
 
-    /*MODO CLARO/ LUZ */
+    /*MODO CLARO/ LIGHT */
     --color-primary: #249599;
     --color-secondary: #9a14a9;
     --color-background: #b2b2e6;
@@ -54,19 +54,3 @@ body.light-mode {
     --color-accent: #7a177d;
 }
 
-/*___________________________________ alteracción reciente de la animacion ____________*/
-/*PARTE DE LA ANIMACIÓN*/
-/* Si quieres controlar la velocidad globalmente */
-:root {
-  --animation-speed: 3s;  /* Puedes cambiar este valor */
-}
-
-.frame1 {
-  opacity: 1;
-  animation: fadeOutIn1 var(--animation-speed) infinite;
-}
-
-.frame2 {
-  opacity: 0;
-  animation: fadeOutIn2 var(--animation-speed) infinite;
-}

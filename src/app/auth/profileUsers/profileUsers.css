@@ -1,3 +1,15 @@
+
+/*NOTA: Es importante diferenciar las clases que vamos a 
+trabajar ya que lo mas que evitemos usar las variables globales,
+y respetar sus clases que estamos trabajando jejeje*/
+
+/*
+
+/*Usar nuevas clases de CSS en los otros archivos (welcome, login) para evitar confusion en el archivo del style.css,
+ para que esas clases se puedan hacer en una nuevas. 
+ cuando es punto y cual es un asterisco como para diferenciar de las clases de CSS */
+
+
 .profile-container {
   color: var(--color-text);
 }
@@ -8,7 +20,7 @@
   text-align: center;
 }
 
-.cover {
+.profile-cover {
   height: 220px;
   background: linear-gradient(
     135deg,
@@ -22,24 +34,49 @@
   padding: 20px;
 }
 
+
+
 /* AVATAR */
-.avatar {
+/*avatar sin imagen*/
+.profile-avatar {
   width: 130px;
   height: 130px;
   border-radius: 50%;
   border: 4px solid var(--color-background);
   object-fit: cover;
   background: white;
+
+  /*se agrego*/
+display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:65px;
+  color:var(--color-primary);
+
+  margin:auto;
+
 }
 
+/*Avatar con imagen */
+.profile-avatar img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+
+
+
 /* USERNAME */
-.username {
+.profile-username {
   color: var(--color-accent);
   margin-top: -10px;
 }
 
 /* BIO */
-.bio {
+.profile-bio {
   max-width: 500px;
   margin: 10px auto;
 }
@@ -49,7 +86,7 @@
   margin-top: 15px;
 }
 
-.btn-primary {
+.profile-btn-primary {
   background-color: var(--color-primary);
   border: none;
   padding: 10px 18px;
@@ -59,7 +96,7 @@
   margin-right: 10px;
 }
 
-.btn-secondary {
+.profile-btn-secondary {
   background-color: var(--color-secondary);
   border: none;
   padding: 10px 18px;
@@ -68,24 +105,44 @@
   cursor: pointer;
 }
 
+.profile-btn-secondary-logout { /*es demasiado importante que lo intentes diferenciar o hacerlo destacar de que no comparten la misma clase*/
+
+  /*posicion del boton*/
+  position: relative;   /* o absolute */
+
+  top: 0px;
+  left: 12px;
+
+  background-color: var(--color-secondary);
+  border:none;
+  padding:10px 18px;
+  color:white;
+  border-radius:20px;
+  cursor:pointer;
+
+
+}
+
+
+
 /* GRID TIPO PINTEREST */
-.posts-grid {
+.profile-posts-grid {
   column-count: 3;
   column-gap: 15px;
   padding: 20px;
 }
 
-.post-card {
+.profile-post-card {
   margin-bottom: 15px;
   break-inside: avoid;
 }
 
-.post-card img {
+.profile-post-card img {
   width: 100%;
   border-radius: 15px;
   transition: transform 0.3s ease;
 }
 
-.post-card img:hover {
+.profile-post-card img:hover {
   transform: scale(1.05);
 }

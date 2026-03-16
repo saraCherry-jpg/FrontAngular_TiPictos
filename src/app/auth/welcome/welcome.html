@@ -1,0 +1,21 @@
+<div class="welcome-container">
+  <div class="animated-background"></div> <!-- a ver-->
+
+  <!-- BOTON DARK MODE -->
+  <div class="theme-toggle">
+    <i class="bi"
+       [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"
+       (click)="toggleTheme()">
+    </i>
+  </div>
+
+  <div class="welcome-content">
+    <img src="assets/imagenes/TiPictosLogo.png" class="welcome-logo">
+    <h1 class="welcome-title">Bienvenido a TiPictos</h1>
+
+    <button class="btn-continue" (click)="goToLogin()">
+      Continuar
+    </button>
+
+  </div>
+</div>

@@ -1,27 +1,34 @@
+
+/*NOTA: Es importante diferenciar las clases que vamos a 
+trabajar ya que lo mas que evitemos usar las variables globales,
+y respetar sus clases que estamos trabajando jejeje*/
+
 /* =========================================
    CONTENEDOR PRINCIPAL
 ========================================= */
 
-.login-container {
+.register-container {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--color-background);
   position: relative;
+  overflow:hidden;
 }
-
 
 /* =========================================
    TARJETA REGISTER
 ========================================= */
 
-.login-card {
+.register-card {
   position: relative;
+  z-index:2; /*se agrego*/
+
   background: var(--color-background);
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   width: 380px;
   text-align: center;
   transition: 0.3s;
@@ -29,23 +36,44 @@
 
 
 /* =========================================
-   LOGO Y TITULO
+   LOGO ANIMADO
 ========================================= */
 
-.logo {
-  font-size: 60px;
-  color: var(--color-primary);
-  margin-bottom: 5px;
+.register-logo-frame{
+  position: relative;
+  width: 150px;
+  height: 150px;
 
-  line-height: 1;
+  margin: 0 auto 10px auto;
+
 }
 
-h2 {
+.register-logo-frame img{
+  position: absolute;
+
+  /*Posicion de la imagen*/
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+
+  /*tamaño de la imagen*/
+  width: 150%;
+  height: 150%;
+  object-fit: contain;
+
+}
+
+
+/* =========================================
+   TITULO
+========================================= */
+
+.register-h2 {
   color: var(--color-text);
   margin-bottom: 25px;
 
   margin-top: 0;
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 500;
 
 }
@@ -55,88 +83,140 @@ h2 {
    INPUTS
 ========================================= */
 
-.input-group {
-  margin-bottom: 16px; /* Espacio consistente entre inputs */
+.register-input-group {
+  margin-bottom: 16px;
   width: 100%;
 }
 
-input {
+.register-input-group input {
   width: 100%;
   padding: 12px 15px;
   border-radius: 10px;
   border: 1px solid var(--color-secondary);
+
   outline: none;
   transition: 0.3s;
+
   background: white;
   color: var(--color-text);
 
-  /*con eso hace que se empareje o aline los componentes*/
   box-sizing: border-box;
   text-align: left;
   font-size: 14px;
+
 }
 
-input:focus {
+.register-input-group input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
+
 }
 
-/* Ajuste automático modo oscuro */
-body.dark-mode input {
+/* modo oscuro */
+
+body.dark-mode .register-input-group input {
   background: #2a2a5e;
   color: white;
+
 }
+
+
+/* =========================================
+   PASSWORD ICON
+========================================= */
+
+.register-password-group {
+
+  position: relative;
+
+}
+
+.register-password-group i {
+
+  position: absolute;
+
+  right: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  cursor: pointer;
+
+  font-size: 18px;
+  color: var(--color-primary);
+
+  transition: 0.2s;
+
+}
+
+.register-password-group i:hover {
+
+  opacity: 0.7;
+
+}
+
 
 
 /* =========================================
    BOTÓN PRINCIPAL (registrar)
 ========================================= */
 
-button {
-  width: 100%;
-  padding: 12px;
+.register-button {
   border-radius: 10px;
   border: none;
   background: var(--color-primary);
   color: white;
-
-  width: auto;             /* Cambiar de 100% a auto */
-  min-width: 180px;        /* Un ancho mínimo para que se vea proporcionado */
-  padding: 12px 24px;       /* Padding más horizontal */
-  margin: 0 auto;          /* Asegurar centrado */
-
+  min-width: 180px;
+  padding: 12px 24px;
+  margin: 10 auto;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+
 }
 
-button:hover {
+.register-button:hover {
   opacity: 0.85;
+}
+
+.register-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+
 }
 
 
 /* =========================================
-   BOTÓN SECUNDARIO (Ir a Login) (Tengo una cuenta)
+   BOTÓN SECUNDARIO
 ========================================= */
 
-.extra-actions {
+.register-extra-actions {
   margin-top: 20px;
-  display: flex;           /* Añadir flexbox */
-  justify-content: center; /* Centrar el botón */
-  width: 100%;             /* Asegurar que ocupa todo el ancho */
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
 }
 
-.secondary-btn {
+.register-secondary-btn {
+  border-radius: 10px;
+  border: none;
   background: var(--color-secondary);
   color: white;
-  width: auto;             /* Cambiar de 100% a auto */
-  min-width: 180px;        /* Un ancho mínimo para que se vea proporcionado */
-  padding: 12px 24px;       /* Padding más horizontal */
-  margin: 0 auto;          /* Asegurar centrado */
+  min-width: 180px;
+  padding: 12px 24px;
+
+  /*con eso hace que la forma del boton se vea bonito jejeje*/
+  margin: 0 auto;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+
 }
 
-.secondary-btn:hover {
+.register-secondary-btn:hover {
   opacity: 0.85;
+
 }
 
 
@@ -144,20 +224,27 @@ button:hover {
    BOTÓN CAMBIO DE TEMA
 ========================================= */
 
-.theme-toggle-inside {
+.register-theme-toggle-inside {
   position: absolute;
+
   top: 15px;
   right: 15px;
+
   font-size: 24px;
   cursor: pointer;
+
   color: var(--color-primary);
+
   transition: 0.3s;
   z-index: 10;
+
 }
 
-.theme-toggle-inside:hover {
+.register-theme-toggle-inside:hover {
   transform: scale(1.2);
 }
+
+
 
 
 /* =========================================
@@ -166,4 +253,80 @@ button:hover {
 
 .zoom {
   transform: scale(1.05);
+}
+
+
+/*MAS ANIMACIÓN ---> IMAGENES QUE PARPADEAN*/
+.register-logo-frame1{
+  opacity: 1;
+}
+
+.register-logo-frame2{
+  opacity: 0;
+  animation: logoSwitch 0.5s infinite; /*PODEMOS CAMBIARLE EL TIEMPO*/
+}
+
+@keyframes logoSwitch{
+
+  0%{
+    opacity:0;
+  }
+
+  50%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0;
+  }
+
+}
+
+
+/* =========================================
+   FONDO ANIMADO REGISTER
+========================================= */
+
+.register-animated-background{
+
+  position:fixed;
+
+  width:200%;
+  height:200%;
+
+  z-index:0;
+
+  background: linear-gradient(
+    45deg,
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-accent),
+    var(--color-background)
+  );
+
+  background-size:400% 400%;
+
+  filter: blur(120px);
+  opacity:0.6;
+
+  animation: moveBackground 20s infinite linear;
+
+}
+
+/* animacion */
+
+@keyframes moveBackground{
+
+  0%{
+    transform: translate(-25%,-25%) rotate(0deg);
+  }
+
+  50%{
+    transform: translate(-10%,-30%) rotate(180deg);
+  }
+
+  100%{
+    transform: translate(-25%,-25%) rotate(360deg);
+  }
+
 }

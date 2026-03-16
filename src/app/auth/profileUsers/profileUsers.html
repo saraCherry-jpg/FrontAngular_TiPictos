@@ -2,32 +2,34 @@
 
   <!-- HEADER CON PORTADA -->
   <div class="profile-header">
-    <div class="cover"></div>
+    <div class="profile-cover"></div>
 
     <div class="profile-info">
-      <img src="assets/imagenes/avatar.jpg" class="avatar" />
 
-      <h2>Sr Saorin</h2>
-      <p class="username">@saorinaalter</p>
-
-      <p class="bio">
-        Subo cosas, casi siempre subo cosas que pienso.
-        Otras veces, cosas que siento.
-      </p>
-
-      <div class="profile-actions">
-        <button class="btn-primary">Editar Perfil</button>
-        <button class="btn-secondary" (click)="toggleTheme()">
-          Cambiar Modo
-        </button>
+      <!-- AVATAR DINÁMICO / FOTO DE PERFIL -->
+      <div class="profile-avatar">
+        <img *ngIf="avatar" [src]="avatar">
+        <i *ngIf="!avatar" class="bi bi-person-circle"></i>
       </div>
+
+      <h2>{{name}}</h2>
+      <p class="profile-username">@{{username}}</p> 
+      <p class="profile-bio"></p> <!-- Va la DESCRIPCIÓN-->
+
+      <!-- BOTONES -->
+      <div class="profile-actions">
+        <button class="profile-btn-primary">Editar Perfil</button>
+        <button class="profile-btn-secondary" (click)="toggleTheme()">Cambiar Modo</button>
+        <button class="profile-btn-secondary-logout" (click)="logout()">Cerrar sesión</button>
+      </div>
+
     </div>
   </div>
 
-  <!-- SECCIÓN DE POSTS -->
-  <div class="posts-grid">
-    <div class="post-card" *ngFor="let post of posts">
-      <img [src]="post.image" />
+  <!-- POSTS -->
+  <div class="profile-posts-grid">
+    <div class="profile-post-card" *ngFor="let post of posts">
+      <img [src]="post.image">
     </div>
   </div>
 

@@ -1,0 +1,139 @@
+
+/*NOTA: Es importante diferenciar las clases que vamos a 
+trabajar ya que lo mas que evitemos usar las variables globales,
+y respetar sus clases que estamos trabajando jejeje*/
+
+.welcome-container{
+  height:100vh;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  position:relative;
+}
+
+/* BOTON DARK MODE */
+
+.welcome-container .theme-toggle{
+
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:26px;
+  color:var(--color-primary);
+  cursor:pointer;
+  transition:0.3s;
+  z-index:5;
+
+}
+
+.welcome-container .theme-toggle:hover{
+  transform:scale(1.2);
+
+}
+
+/* FONDO ANIMADO */
+.animated-background{
+  position:fixed; /*ojo aqui NO es ABSOLUTE*/ 
+   z-index:2; /*OJO EN ESA PARTE PARA QUE ESTE CONTROLADO LA PANTALLA */
+  width:200%;
+  height:200%;
+  background: linear-gradient(
+    45deg,
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-accent),
+    var(--color-background)
+  );
+
+  background-size:400% 400%;
+
+  filter: blur(120px);
+  opacity:0.6;
+
+  animation: moveBackground 20s infinite linear;
+}
+
+/* ANIMACION DEL FONDO */
+@keyframes moveBackground {
+
+  0%{
+    transform: translate(-25%,-25%) rotate(0deg);
+  }
+
+  50%{
+    transform: translate(-10%,-30%) rotate(180deg);
+  }
+
+  100%{
+    transform: translate(-25%,-25%) rotate(360deg);
+  }
+
+}
+
+/* CONTENIDO */
+.welcome-content{
+  position:relative;
+  text-align:center;
+  color:var(--color-text);
+  z-index:2;
+
+  transform: translateY(-60px); /* mueve todo hacia arriba */
+}
+
+/* LOGO */
+.welcome-logo{
+  width:450px;
+  height:auto;
+  margin-bottom:-65px;
+  animation: floatLogo 3s ease-in-out infinite;
+}
+
+
+/* EFECTO FLOTANTE */
+@keyframes floatLogo{
+
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+
+}
+
+.welcome-title{
+  font-size:2.5rem;
+  margin-bottom:10px;
+}
+
+.welcome-subtitle{
+  opacity:0.8;
+  margin-bottom:30px;
+}
+
+/* BOTON */
+.btn-continue{
+
+  padding:20px 50px; /*x, y*/
+  border:none;
+  border-radius:10px;
+  font-size:30px; /*Tamaño de la letra*/
+  background:var(--color-primary);
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+
+}
+
+.btn-continue:hover{
+  transform:scale(1.05);
+  background:var(--color-secondary);
+
+}

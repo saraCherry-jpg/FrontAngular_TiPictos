@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-
+  
   // ================================
   // VARIABLES
   // ================================
@@ -23,72 +23,151 @@ export class LoginComponent {
   password: string = '';
   isLoading: boolean = false;
   isDarkMode: boolean = false;
+  showPassword: boolean = false; //para la contraseña
 
-  // ================================
+
   // CONSTRUCTOR
-  // ================================
-
   constructor(private router: Router) {}
 
   // ================================
   // MÉTODOS
   // ================================
 
-  toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-    document.body.classList.toggle('dark-mode');
+  ngOnInit(){ //Detecta el tema guardado
+
+    const theme = localStorage.getItem('theme');
+
+    if(theme === 'dark'){
+      document.body.classList.add('dark-mode');
+      this.isDarkMode = true;
+    }else{
+      document.body.classList.remove('dark-mode');
+      this.isDarkMode = false;
+    }
+
   }
+
+
+  //Para la CONTRASEÑA 
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+ // ================================
+  // CORREGIDO: Toggle Dark Mode
+  // ================================
+
+  toggleTheme(): void {
+
+    this.isDarkMode = !this.isDarkMode;
+
+    if(this.isDarkMode){
+
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme','dark');
+
+    }else{
+
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme','light');
+
+    }
+
+  }
+
+  // ================================
+  // LOGIN  --> CONTROLADOR
+  // ================================
 
   login(): void {
-    this.isLoading = true;
 
+    // VALIDAR CAMPOS VACIOS
+    if (!this.email || !this.password) {
+      alert('Debe ingresar correo y contraseña');
+      return;
+    }
+
+    // BUSCAR USUARIO REGISTRADO
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userFound = users.find((u: any) => u.email === this.email);
+
+
+    // SI EL USUARIO NO EXISTE
+    if (!userFound) {
+      alert('El usuario no existe. Debe registrarse primero.');
+      return;
+    }
+
+    // VALIDAR CONTRASEÑA
+    if (userFound.password !== this.password) {
+      alert('Contraseña incorrecta');
+      return;
+    }
+
+
+    // LOGIN CORRECTO
+    this.isLoading = true;
     setTimeout(() => {
       alert('Login exitoso');
+      
+      //Guarda la sesión activada
+      localStorage.setItem('currentUser', JSON.stringify(userFound));
       this.isLoading = false;
 
-      //Redirige el perfil
-    this.router.navigate(['/profileUsers']);
-    }, 2000); //2 segundos es lo que va a durar
-  }
+      // Redirige al perfil
+      this.router.navigate(['/profileUsers']);
+
+    }, 2000);
+
+  } // FIN DEL METODO CONTROLADOR LOGIN
+
+  // ================================
+  // NAVEGACIÓN
+  // ================================
 
   goToRegister(): void {
     this.router.navigate(['/register']);
   }
 
   exit(): void {
-    // Si quieres limpiar sesión:
-    // localStorage.clear();
-
     this.router.navigate(['/']);
   }
 
-  //MUCHO OJITO
-  //MUCHO OJITO
-  //OJO ESTA PARTE ESTA BIEN ALTERADO PUES PARA QUE RESUELVA
 
+  // ================================
+  // ANIMACIÓN DEL LOGO
+  // ================================
 
-  //PARA LA ANIMACCIÓN
-    animationSpeed: number = 3000; // 3 segundos por ciclo
+  animationSpeed: number = 3000; // 3 segundos por ciclo
   isAnimating: boolean = true;
-  
-  // Método para cambiar la velocidad (opcional)
+
   setAnimationSpeed(speed: number): void {
+
     this.animationSpeed = speed;
-    // Aquí podrías actualizar una variable CSS personalizada
-    document.documentElement.style.setProperty('--animation-speed', `${speed}ms`);
+
+    document.documentElement
+      .style
+      .setProperty('--animation-speed', `${speed}ms`);
+
   }
-  
-  // Método para pausar/reanudar (opcional)
+
   toggleAnimation(): void {
+
     this.isAnimating = !this.isAnimating;
     const frames = document.querySelectorAll('.frame');
+
     frames.forEach(frame => {
+
       if (this.isAnimating) {
         frame.classList.add('animate');
       } else {
         frame.classList.remove('animate');
       }
+
     });
+
   }
 
 }
