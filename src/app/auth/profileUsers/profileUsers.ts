@@ -1,62 +1,90 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; //se agrego
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-users',
   standalone: true,
-  imports: [CommonModule], //Se agrego
+  imports: [CommonModule],
   templateUrl: './profileUsers.html', 
   styleUrls: ['./profileUsers.css']
 })
 
-
 export class ProfileComponent {
-  //variables que funcionan como mapeo
+
+  // VARIABLES
   name: string = '';
   username: string = '';
-  avatar: string = "";
+  avatar: string = '';
   posts:any[] = [];
-  //avatar: any;
-  //logout: any;
+  isDarkMode: boolean = false; 
 
-  constructor(private router: Router){} //constructor de la ruta
+  constructor(private router: Router){}
 
-ngOnInit(){
+  // ================================
+  // INICIALIZACIÓN
 
-  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  ngOnInit(){
 
-  this.name = user.name;
-  this.username = user.username;
-  this.avatar = user.avatar || '';
+    // USUARIO
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    this.name = user.name;
+    this.username = user.username;
+    this.avatar = user.avatar || '';
 
 
-  const theme = localStorage.getItem('theme'); //me falto esta parte de agregar, pero es para que se guarde el tema 
+    // ================================
+    // DETECTAR TEMA GUARDADO
+    // ================================
 
-  if(theme === 'dark'){
-    document.body.classList.add('dark-mode');
-  }else{
-    document.body.classList.remove('dark-mode');
+    const theme = localStorage.getItem('theme');
+
+    if(theme === 'dark'){
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+      this.isDarkMode = true;
+    }else{
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+      this.isDarkMode = false;
+    }
+
+    // POSTS
+    this.posts = [
+      { image: 'assets/imagenes/PinkyRoll.png.jpeg' },
+      { image: 'assets/imagenes/Kneesocks.png' },
+      { image: 'assets/imagenes/Tempo.png' }
+    ];
+
   }
 
-  
 
-  this.posts = [
-    { image: 'assets/imagenes/PinkyRoll.png.jpeg' },
-    { image: 'assets/imagenes/Kneesocks.png' },
-    { image: 'assets/imagenes/Tempo.png' }
-  ];
+  // CAMBIAR TEMA (CORREGIDO)
+  toggleTheme(): void {
 
-}
+    this.isDarkMode = !this.isDarkMode;
 
-  //Para el tema de interfaz dark/ light
-  toggleTheme(){
-    document.body.classList.toggle('dark-mode');
+    if(this.isDarkMode){
+
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('theme','dark');
+
+    }else{
+
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+      localStorage.setItem('theme','light');
+
+    }
+
   }
 
 
   // CERRAR SESIÓN
   logout(){
+
     localStorage.removeItem('currentUser');
     alert("Sesión cerrada");
     this.router.navigate(['/login']);
