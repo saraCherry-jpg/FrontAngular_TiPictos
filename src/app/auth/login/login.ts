@@ -87,6 +87,8 @@ export class LoginComponent {
     if (!this.email || !this.password) {
       alert('Debe ingresar correo y contraseña');
       return;
+
+      //Tambien que salga en el archivo (ya sea en el html o css, que ponga como un color rojito)
     }
 
     // BUSCAR USUARIO REGISTRADO

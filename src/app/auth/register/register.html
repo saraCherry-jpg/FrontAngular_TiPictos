@@ -39,7 +39,13 @@
           name="name"
           [(ngModel)]="name"
           required
+          #nameInput="ngModel"
+          [class.register-input-error]="nameInput.invalid && nameInput.touched"
           placeholder="Nombre completo">
+
+          <div *ngIf="nameInput.invalid && nameInput.touched" class="register-error-text">
+            El nombre es obligatorio
+          </div>
       </div>
 
       <!-- USERNAME -->
@@ -49,7 +55,13 @@
           name="username"
           [(ngModel)]="username"
           required
+          #usernameInput="ngModel"
+          [class.register-input-error]="usernameInput.invalid && usernameInput.touched"
           placeholder="Nombre de Usuario">
+
+          <div *ngIf="usernameInput.invalid && usernameInput.touched" class="register-error-text">
+            El username es obligatorio
+          </div>
       </div>
 
       <!-- EMAIL -->
@@ -59,7 +71,13 @@
           name="email"
           [(ngModel)]="email"
           required
+          #emailInput="ngModel"
+          [class.register-input-error]="emailInput.invalid && emailInput.touched"
           placeholder="Correo electrónico">
+
+          <div *ngIf="emailInput.invalid && emailInput.touched" class="register-error-text">
+            El correo es obligatorio
+          </div>
       </div>
 
       <!-- PASSWORD -->
@@ -70,6 +88,8 @@
           name="password"
           [(ngModel)]="password"
           required
+          #passwordInput="ngModel"
+          [class.register-input-error]="passwordInput.invalid && passwordInput.touched"
           placeholder="Contraseña">
 
         <i class="bi"
@@ -77,6 +97,9 @@
            (click)="togglePassword()">
         </i>
 
+        <div *ngIf="passwordInput.invalid && passwordInput.touched" class="register-error-text">
+          La contraseña es obligatoria
+        </div>
       </div>
 
       <!-- CONFIRM PASSWORD -->
@@ -87,6 +110,12 @@
           name="confirmPassword"
           [(ngModel)]="confirmPassword"
           required
+          #confirmPasswordInput="ngModel"
+          [class.register-input-error]="
+          (confirmPasswordInput.invalid && confirmPasswordInput.touched) ||
+          (confirmPassword !== password && confirmPasswordInput.touched)
+          "
+
           placeholder="Confirmar contraseña">
 
         <i class="bi"
@@ -94,12 +123,21 @@
            (click)="togglePassword()">
         </i>
 
+        <div *ngIf="confirmPasswordInput.invalid && confirmPasswordInput.touched" class="register-error-text">
+          Debe confirmar la contraseña
+        </div>
+
+        <div *ngIf="confirmPassword !== password && confirmPasswordInput.touched" class="register-error-text">
+          Las contraseñas no coinciden
+        </div>
+
       </div>
 
       <!-- BOTON REGISTRAR -->
       <button
         type="submit"
         class="register-button"
+        (click)="registerForm.form.markAllAsTouched()"
         [disabled]="registerForm.invalid || isLoading">
 
         {{ isLoading ? 'Registrando...' : 'Registrar' }}

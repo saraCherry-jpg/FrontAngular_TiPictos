@@ -39,7 +39,15 @@
           name="email"
           [(ngModel)]="email"
           required
+          #emailInput="ngModel"
+          [class.login-input-error]="emailInput.invalid && emailInput.touched"
           placeholder="Correo electrónico">
+
+          <!-- MENSAJE -->
+          <div *ngIf="emailInput.invalid && emailInput.touched" class="login-error-text">
+            El correo es obligatorio
+          </div>
+
       </div>
 
       <!-- PASSWORD CON ICONO DE OJO -->
@@ -50,6 +58,8 @@
           name="password"
           [(ngModel)]="password"
           required
+          #passwordInput="ngModel"
+          [class.login-input-error]="passwordInput.invalid && passwordInput.touched"
           placeholder="Contraseña">
 
         <i class="bi"
@@ -57,12 +67,18 @@
            (click)="togglePassword()">
         </i>
 
+        <!-- MENSAJE -->
+          <div *ngIf="emailInput.invalid && emailInput.touched" class="login-error-text">
+            El correo es obligatorio
+          </div>
+
       </div>
 
       <!-- BOTON PRINCIPAL -->
       <button
         type="submit"
         class="login-btn"
+        (click)="loginForm.form.markAllAsTouched()"
         [disabled]="loginForm.invalid || isLoading">
 
         {{ isLoading ? 'Cargando...' : 'Iniciar' }}

@@ -22,25 +22,32 @@ export class ProfileComponent {
 
   constructor(private router: Router){} //constructor de la ruta
 
-  ngOnInit(){
+ngOnInit(){
 
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    this.name = user.name;
-    this.username = user.username;
+  this.name = user.name;
+  this.username = user.username;
+  this.avatar = user.avatar || '';
 
-    // Si el usuario tuviera avatar guardado
-    this.avatar = user.avatar || '';
 
-    // POSTS DE EJEMPLO  ---> van a variar las imagenes de los post segun el usuario,
-    // en ese caso estamos usando post de CGamerdraw
-    this.posts = [
-      { image: 'assets/imagenes/PinkyRoll.png.jpeg' },
-      { image: 'assets/imagenes/Kneesocks.png' },
-      { image: 'assets/imagenes/Tempo.png' }
-    ];
+  const theme = localStorage.getItem('theme'); //me falto esta parte de agregar, pero es para que se guarde el tema 
 
+  if(theme === 'dark'){
+    document.body.classList.add('dark-mode');
+  }else{
+    document.body.classList.remove('dark-mode');
   }
+
+  
+
+  this.posts = [
+    { image: 'assets/imagenes/PinkyRoll.png.jpeg' },
+    { image: 'assets/imagenes/Kneesocks.png' },
+    { image: 'assets/imagenes/Tempo.png' }
+  ];
+
+}
 
   //Para el tema de interfaz dark/ light
   toggleTheme(){
