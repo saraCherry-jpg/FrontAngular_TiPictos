@@ -1,0 +1,444 @@
+/* =========================================
+   CONTENEDOR
+========================================= */
+.edit-profile-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background);
+}
+
+/* =========================================
+   FONDO ANIMADO (COPIA ADAPTADA)
+========================================= */
+.edit-profile-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  z-index: 0;
+
+  background: linear-gradient(
+    45deg,
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-accent),
+    var(--color-background)
+  );
+
+  background-size: 400% 400%;
+  filter: blur(120px);
+  opacity: 0.6;
+
+  animation: editBgMove 20s infinite linear;
+}
+
+@keyframes editBgMove {
+  0% { transform: translate(0%,0%); }
+  25% { transform: translate(-25%, -25%); }
+  50% { transform: translate(-50%, 0%); }
+  75% { transform: translate(-25%, 25%); }
+  100% { transform: translate(0%,0%); }
+}
+
+/* =========================================
+   TARJETA
+========================================= */
+.edit-profile-card {
+  position: relative;
+  z-index: 2;
+  width: 380px;
+  padding: 30px;
+  border-radius: 20px;
+
+  /* GLASS EFFECT */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(255,255,255,0.2);
+
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+body.dark-mode .edit-profile-card {
+  background: rgba(20, 20, 40, 0.4);
+}
+
+/* =========================================
+   TITULO
+========================================= */
+.edit-profile-title {
+  color: var(--color-text);
+  margin-bottom: 15px;
+}
+
+/* =========================================
+   AVATAR
+========================================= */
+.edit-profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.edit-profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.edit-profile-avatar i {
+  font-size: 65px;
+  color: var(--color-primary);
+}
+
+/* =========================================
+   BOTÓN FOTO
+========================================= */
+.edit-profile-upload-btn {
+  margin: 15px 0;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  background: var(--color-secondary);
+  color: white;
+  cursor: pointer;
+}
+
+/* =========================================
+   FORMULARIO
+========================================= */
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* INPUTS */
+.edit-profile-input,
+.edit-profile-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--color-secondary);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.edit-profile-textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* =========================================
+   BOTONES
+========================================= */
+.edit-profile-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-profile-btn-primary {
+  flex: 1;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.edit-profile-btn-secondary {
+  flex: 1;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* HOVER */
+.edit-profile-btn-primary:hover,
+.edit-profile-upload-btn:hover {
+  opacity: 0.85;
+}
+
+.edit-profile-btn-secondary:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================================
+   BOTÓN DARK MODE
+========================================= */
+.edit-profile-theme-toggle {
+ position: absolute;
+ /*Cambio de posicionamiento del icono*/
+  top: 20px;
+  right: 20px;
+
+  /*Tamaño del icono*/
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  font-size: 25px; /*Tamaño de la letra/ icono SOL LUNA*/
+
+  color: white;
+
+  /* EFECTO GLASS */
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  transition: all 0.3s ease;
+
+  z-index: 5;
+}
+
+.edit-profile-theme-toggle:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+
+
+
+
+
+
+/*CSS DEL MODAL*/
+/* =========================================
+   OVERLAY (FONDO)
+========================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: fadeIn 0.3s ease;
+}
+
+/* =========================================
+   TARJETA MODAL (GLASS PRO)
+========================================= */
+.glass-card {
+  width: 420px;
+  padding: 25px;
+  border-radius: 25px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.5),
+    inset 0 1px rgba(255,255,255,0.2);
+
+  color: var(--color-text);
+
+  animation: scaleIn 0.3s ease;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+.header-cambiar-FotoProfile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-cambiar-FotoProfile h3 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* =========================================
+   BOTÓN CERRAR
+========================================= */
+.close-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 18px;
+
+  transition: all 0.25s ease;
+}
+
+.close-btn:hover {
+  background: var(--color-accent);
+  color: white;
+  transform: scale(1.1) rotate(8deg);
+}
+
+/* =========================================
+   OPCIONES (BOTONES PRO)
+========================================= */
+.type-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.type-selector button {
+  width: 100%;
+  padding: 14px;
+
+  border-radius: 14px;
+  border: none;
+
+  background: rgba(255,255,255,0.08);
+  color: var(--color-text);
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  font-weight: 500;
+}
+
+/*  BOTÓN PRINCIPAL (SUBIR FOTO) */
+.type-selector button:first-child {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  color: white;
+}
+
+/*  BOTÓN ELIMINAR */
+.type-selector button:nth-child(2) {
+  background: rgba(255, 80, 80, 0.15);
+  color: #ff6b6b;
+}
+
+/*  CANCELAR */
+.type-selector button:nth-child(3) {
+  background: rgba(255,255,255,0.05);
+}
+
+.type-selector button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* =========================================
+   PREVIEW IMAGEN
+========================================= */
+.preview {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 18px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+
+  /*plus que agregue --> animación  */
+  animation: fadeZoom 0.4s ease;
+}
+
+/* =========================================
+   BOTÓN GUARDAR (ESTILO IGUAL A PUBLICAR)
+========================================= */
+.publish-btn {
+  width: 100%;
+  margin-top: 20px;
+
+  padding: 15px;
+
+  border-radius: 16px;
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.publish-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* =========================================
+   ANIMACIONES
+========================================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/*Se grago mas*/
+@keyframes fadeZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

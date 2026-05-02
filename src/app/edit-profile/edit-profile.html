@@ -1,0 +1,112 @@
+<div class="edit-profile-container">
+
+  <!-- FONDO ANIMADO -->
+  <div class="edit-profile-bg"></div>
+
+  <!-- BTN DARK MODE -->
+  <div class="edit-profile-theme-toggle" (click)="toggleTheme()">
+    <i class="bi" [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
+  </div>
+
+  <div class="edit-profile-card">
+    <h2 class="edit-profile-title">Editar Perfil</h2>
+
+    <!-- AVATAR -->
+    <div class="edit-profile-avatar">
+      <img *ngIf="avatar" [src]="avatar">
+      <i *ngIf="!avatar" class="bi bi-person-circle"></i>
+    </div>
+
+    <!--  CAMBIO AQUÍ -->
+    <button 
+      class="edit-profile-upload-btn"
+      (click)="openPhotoOptions()">
+      Cambiar foto
+    </button>
+
+    <!-- FORM -->
+    <div class="edit-profile-form">
+
+      <input 
+        class="edit-profile-input"
+        [(ngModel)]="name"
+        placeholder="Nombre">
+
+      <input 
+        class="edit-profile-input"
+        [(ngModel)]="username"
+        placeholder="Usuario">
+
+      <textarea 
+        class="edit-profile-textarea"
+        [(ngModel)]="bio"
+        placeholder="Descripción">
+      </textarea>
+
+    </div>
+
+    <!-- BOTONES -->
+    <div class="edit-profile-actions">
+
+      <button 
+        class="edit-profile-btn-primary"
+        (click)="saveChanges()">
+        Guardar
+      </button>
+
+      <button 
+        class="edit-profile-btn-secondary" (click)="goBack()">
+        Cancelar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!--  MODAL FOTO PERFIL  -->
+<div *ngIf="showPhotoModal" class="overlay">
+
+  <div class="glass-card">
+
+    <!-- HEADER/ encabezado -->
+    <div class="header-cambiar-FotoProfile">
+      <h3>Cambiar foto de perfil</h3>
+
+      <button class="close-btn" (click)="closePhotoOptions()">✕</button>
+    </div>
+
+    <!-- OPCIONES / ACCIONES con sus Botones -->
+    <div *ngIf="!showPreview" class="type-selector">
+
+      <button (click)="fileInput.click()">Subir foto</button>
+      <button (click)="removeAvatar()">Eliminar foto actual</button>
+      <button (click)="closePhotoOptions()">Cancelar</button>
+
+    </div>
+
+    <!-- PREVIEW / PREVISTA -->
+    <div *ngIf="showPreview">
+
+      <img [src]="tempAvatar" class="preview">
+
+      <button class="publish-btn" (click)="confirmAvatar()">
+        Guardar foto
+      </button>
+
+    </div>
+
+    <!-- INPUT OCULTO -->
+    <input 
+      type="file"
+      #fileInput
+      hidden
+      accept="image/*"
+      (click)="fileInput.value = ''"
+      (change)="onAvatarSelected($event)">
+
+  </div>
+
+</div>

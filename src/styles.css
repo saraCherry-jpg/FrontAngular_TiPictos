@@ -22,7 +22,7 @@ Segun la paleta de colores de la interfaz
     --color-primary-dark: #66D7DB;
     --color-secondary-dark: #dc56eb;
     --color-background-dark: #19194d;
-    --color-text-dark: #726de8;
+    --color-text-dark: #cfd3ff; /*anteiormente era #726de8;*/
      --color-accent-dark: #e582e8;
 
 
@@ -54,3 +54,10 @@ body.light-mode {
     --color-accent: #7a177d;
 }
 
+
+/*Se evita romper el ancho*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

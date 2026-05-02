@@ -1,0 +1,73 @@
+<div class="overlay">
+
+  <div class="glass-card">
+
+    <!-- HEADER -->
+    <div class="header">
+      <h3>Crear publicación</h3>
+      <button class="close-btn" (click)="close.emit()">
+        ✖
+      </button>
+    </div>
+
+    <!-- SELECTOR -->
+    <div class="type-selector">
+      <button 
+        (click)="type='text'" 
+        [class.active]="type==='text'">
+        <i class="bi bi-text-paragraph"></i>
+        Texto
+      </button>
+
+      <button 
+        (click)="type='image'" 
+        [class.active]="type==='image'">
+        <i class="bi bi-image"></i>
+        Imagen
+      </button>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+
+      <!-- TEXTO -->
+      <div *ngIf="type==='text'" class="block">
+        <textarea 
+          [(ngModel)]="description"
+          placeholder="¿Qué estás pensando?"></textarea>
+      </div>
+
+      <!-- IMAGEN -->
+      <div *ngIf="type==='image'" class="block">
+
+        <div class="upload-box" (click)="fileInput.click()">
+          <i class="bi bi-cloud-upload"></i>
+          <p>Subir imagen</p>
+        </div>
+
+        <input type="file" hidden #fileInput (change)="onFileSelected($event)">
+
+        <img *ngIf="preview" [src]="preview" class="preview">
+
+        <textarea 
+          [(ngModel)]="description"
+          placeholder="Agrega una descripción"></textarea>
+      </div>
+
+      <!-- HASHTAGS -->
+      <input 
+        class="hashtags"
+        type="text"
+        [(ngModel)]="hashtags"
+        placeholder="#hashtags separados por espacio">
+
+    </div>
+
+    <!-- FOOTER -->
+    <button class="publish-btn" (click)="publish()">
+      Publicar
+    </button>
+
+  </div>
+
+</div>

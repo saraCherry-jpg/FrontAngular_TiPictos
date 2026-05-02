@@ -18,10 +18,15 @@ y respetar sus clases que estamos trabajando jejeje*/
 .profile-header {
   position: relative;
   text-align: center;
+  
+  /*Para acamodar el componente*/
+  top: -35px;  /*Hacia abajo (+) hacia arriba (-)*/
+                /*con el LEFT Hacia derecha (+) hacia izquierda (-)*/
 }
 
 .profile-cover {
-  height: 220px;
+  height: 220px; /*El tamaño del backgrouund  */
+
   background: linear-gradient(
     135deg,
     var(--color-primary),
@@ -84,57 +89,155 @@ display:flex;
 /* BOTONES */
 .profile-actions {
   margin-top: 15px;
+
+   display: flex;
+  flex-wrap: wrap; /* permite que bajen de línea */
+  justify-content: center;
+  gap: 10px; /* espacio entre botones */
+
 }
 
+/*Boton de EDITAR */
 .profile-btn-primary {
+  background-color: var(--color-primary);
+  border: none;
+  padding: 10px 18px;
+  color: white; /*color de texto de la letra*/
+  border-radius: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+
+  /*Involucra un poco de animación*/
+  transition: 0.2s ease;
+
+}
+
+.profile-btn-primary:hover  { /*parte de la animación del btn editar profile*/
+  opacity: 0.85;
+  transform: translateY(-2px);
+
+}
+
+/*es el MODO OSCURO */
+.profile-btn-secondary{
+  background-color: var(--color-secondary);
+  padding: 10px 16px;
+  border-radius: 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+
+}
+
+.profile-btn-secondary:hover {
+  opacity: 0.85;
+}
+
+
+/*    boton para cerrar sesión    */
+.profile-btn-secondary-logout { /*es demasiado importante que lo intentes diferenciar o hacerlo destacar de que no comparten la misma clase*/
+  position: absolute;
+
+  /*Posicion del boton o componente*/
+  top: 50px; /*arriba (+) abajo (-)*/
+  left: 20px; /*izquierda (+) derecha (-)*/
+
+  background-color: var(--color-secondary);
+  border: none;
+  padding: 10px 18px;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+
+  z-index: 1; /* bajo */
+
+}
+
+/* Hover bonito */
+.profile-btn-secondary-logout:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+
+/* Botones Follow y Followers*/
+.profile-btn-secondary-Follow,
+.profile-btn-secondary-Followers {
   background-color: var(--color-primary);
   border: none;
   padding: 10px 18px;
   color: white;
   border-radius: 20px;
   cursor: pointer;
-  margin-right: 10px;
+  transition: 0.2s ease;
 }
 
-.profile-btn-secondary {
+/* HOVER bonito */
+.profile-btn-secondary-Follow:hover,
+.profile-btn-secondary-Followers:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+/* OPCIONAL: estado activo */
+.profile-btn-secondary-Follow.active,
+.profile-btn-secondary-Followers.active {
   background-color: var(--color-secondary);
-  border: none;
-  padding: 10px 18px;
-  color: white;
-  border-radius: 20px;
-  cursor: pointer;
 }
 
-.profile-btn-secondary-logout { /*es demasiado importante que lo intentes diferenciar o hacerlo destacar de que no comparten la misma clase*/
 
-  /*posicion del boton*/
-  position: relative;   /* o absolute */
-
-  top: 0px;
-  left: 12px;
-
-  background-color: var(--color-secondary);
-  border:none;
-  padding:10px 18px;
-  color:white;
-  border-radius:20px;
-  cursor:pointer;
-
-
-}
 
 
 
 /* GRID TIPO PINTEREST */
 .profile-posts-grid {
+  padding-bottom: 100px; /* evita que el FAB tape posts */
+
   column-count: 3;
   column-gap: 15px;
   padding: 20px;
 }
 
 .profile-post-card {
-  margin-bottom: 15px;
-  break-inside: avoid;
+  /*margin-bottom: 15px;
+  break-inside: avoid;*/
+
+  position: relative;
+  cursor: pointer;
+}
+
+/* OVERLAY */
+.post-hover {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  opacity: 0;
+  border-radius: 15px;
+
+  transition: 0.3s;
+}
+
+.post-hover span {
+  color: white;
+  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ACTIVACIÓN */
+.profile-post-card:hover .post-hover {
+  opacity: 1;
 }
 
 .profile-post-card img {
@@ -146,3 +249,812 @@ display:flex;
 .profile-post-card img:hover {
   transform: scale(1.05);
 }
+
+
+/*ESTADO DEL POST O COSA DEL POST EN GENERAL*/
+.empty-state {
+  text-align: center;
+  padding: 30px 20px 60px;
+  margin-top: -40px; /*lo sube */
+  opacity: 0.8;
+}
+
+.empty-state i {
+  font-size: 80px;
+  color: var(--color-primary);
+}
+
+.create-post-btn {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+}
+
+
+/*BOTON PARA CREAR OTRA PUBLICACIÓN O POAST*/
+/* BOTÓN FLOTANTE (+) */
+.fab-create-post {
+  position: fixed; /*es la idea o clave*/
+  bottom: 25px;
+  right: 25px;
+   z-index: 1000;
+
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  /*Para mover el alto y ancho del boton de publicar*/
+  top: 100px;
+
+  background: var(--color-primary);
+  color: white;
+  border: none;
+
+  cursor: pointer;
+  font-size: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fab-create-post:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+
+/*   PARA EL TEMA DARK MODE/ LIGHT MODE   */ /*ES EL BOTON WEON*/
+.profile-theme-toggle {
+  position: absolute;
+  top: 55px; /*arriba (-)* abajo (+)*/
+  right: 15px;
+
+  background: rgba(0,0,0,0.2);
+  border: none;
+  border-radius: 50%;
+
+  /*Cambia el tamaño del icono jasklj*/
+  width: 50px;
+  height: 50px;
+
+  color: white;
+  font-size: 25px; /*El tamaño del icono del sol o luna*/
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*Se agrego esto para animar*/
+  transition: all 0.3s ease;
+
+}
+
+.profile-theme-toggle:hover {
+  transform: scale(1.1) rotate(10deg);
+  background: rgba(255,255,255,0.25);
+}
+
+
+
+/*EXTRAS DE MODAL MANDE*/
+.overlay {
+  z-index: 9999;
+}
+
+
+/*PARTE DEL MODAL*/
+.post-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.post-card {
+  width: 500px;
+  max-width: 90%;
+
+  /*overflow: hidden; /* evita que algo se salga */
+
+  max-height: 85vh;           /* ← Altura máxima (85% de la pantalla) */
+  overflow-y: auto;           /* ← Scroll vertical cuando sea necesario */
+  overflow-x: hidden;         /* ← Evita scroll horizontal */
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(25px);
+
+  border-radius: 25px;
+  padding: 20px;
+
+  color: white;
+  position: relative;
+
+  /*Se agrego esto xd*/
+  box-shadow:0 10px 30px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.2);
+
+  animation: scaleIn 0.25s ease;
+}
+
+/*MEJOAS EN EL POAST CARD */
+.post-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.post-card::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+.post-card::-webkit-scrollbar-thumb {
+  background: #5fd0d6;
+  border-radius: 10px;
+}
+
+.post-card::-webkit-scrollbar-thumb:hover {
+  background: #4ca2cd;
+}
+
+
+.post-image {
+  width: 100%;
+  border-radius: 15px;
+
+  max-height: 280px; /*evita que abarque todo el modal*/
+  object-fit: contain;   /* ← cambiamos de cover a contain */
+  background: #0a0a0a;   /* fondo oscuro para áreas no cubiertas */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+/*INFORMACIÓN O DESCRIPCIÓN DE LA PUBLICACIÓN */
+.post-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /*separa TODO automáticamente */
+
+  margin-top: 12px;
+}
+
+.post-info p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.post-info small {
+  display: block;   
+  opacity: 0.6;
+  font-size: 12px; /*separación de los tags*/
+}
+
+
+/*ACCIONES EDITAR O ELIMINAR*/
+.post-actions {
+  display: flex;
+  justify-content: flex-end; /*Los manda a la derecha*/
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.post-actions button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+
+   font-size: 14px;
+    font-weight: 500;
+
+  transition: 0.2s;
+}
+
+
+/* EDIT */
+.post-actions button:first-child {
+  background: rgba(255,255,255,0.1);
+  color: var(--color-primary);
+}
+
+.post-actions button:first-child:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: scale(1.1) rotate(10deg);
+}
+
+
+/* DELETE */
+.post-actions button:last-child {
+  background: var(--color-secondary);
+  color: white;
+}
+
+.post-actions button:last-child:hover {
+  color: var(--color-secondary);
+  color: white;
+  transform: scale(1.1) rotate(10deg);
+  
+}
+
+
+
+
+/*Hastags jaklsjakls*/
+.post-tags {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.post-tags span {
+  background: rgba(95, 208, 214, 0.15);
+  color: #5fd0d6;
+
+  padding: 6px 12px;
+  border-radius: 15px;
+
+  font-size: 11px;
+  font-weight: 500;
+  
+
+  transition: 0.2s;
+}
+
+.post-tags span:hover {
+  background: #5fd0d6;
+  color: black;
+}
+
+
+/*CORAZÓN, COMENTARIO Y REPOST */
+.post-social {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.post-social span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.post-social i {
+  font-size: 18px;
+}
+
+/* HOVER */
+.post-social span:hover {
+  transform: scale(1.1);
+  color: var(--color-primary);
+}
+
+
+/* like/Corazon activo */
+.bi-heart-fill {
+  color: red;
+}
+
+
+
+/*cierra la publicación previamente visto*/
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  background: rgba(255,255,255,0.1);
+  border: none;
+
+  width: 35px;
+  height: 35px;
+
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  background: var(--color-secondary);
+  transform: scale(1.1) rotate(10deg);
+}
+
+
+
+/*CONFIRMAR ELIMINACIÓN MODAL*/
+.confirm-modal {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /*inset: 0;*/
+
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.confirm-card {
+  background: rgba(30,30,30,0.7);
+  backdrop-filter: blur(20px);
+
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  width: 300px;
+
+  color: white;
+
+  /*se agrego el extra*/
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5),
+
+    /*inset 0 1px rgba(255,255,255,0.2);*/
+
+  /*animation: scaleIn 0.25s ease;*/
+}
+
+/*
+.confirm-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+*/
+
+.confirm-actions button {
+  flex: 1;
+  padding: 10px 0;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition: all 0.25s ease;
+  
+}
+
+/* separación bonita */
+.confirm-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+/*CANCELAR */
+.cancel {
+  background: rgba(255,255,255,0.1);
+  color: #aaa;
+
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.cancel:hover {
+  background: var(--color-primary);
+  color: white;
+
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+/*ELIMINAR */
+.delete {
+ background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+  color: white;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.delete:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20pxrgba(0,0,0,0.5);
+}
+
+
+
+
+/*APARTADO DE ANIMACIÓN */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/*TEXTO EN PUBLICACIONES DE TEXTO*/
+.text-post {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+
+  border-radius: 15px;
+  padding: 15px;
+
+  min-height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  color: white;
+
+  transition: 0.3s;
+}
+
+.text-post:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+
+
+/*  ___________________________ COMENTARIOS _____________________________________*/
+/* CONTENEDOR */
+.comments-section {
+  margin-top: 15px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+/* LISTA */
+.comments-list {
+  max-height: 200px; /* Altura fija para comentarios */
+
+  /*Herramientas scroll*/
+  overflow-y: auto; /*Es la barrita SCROLL en vertical, para horizontal seria lo mismo pero en X*/
+  overflow-x: hidden; /* IMPORTANTE */
+  padding-right: 5px; /* evita que el scroll tape texto */
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+/*MAS ESTILO BONITO DEL SCROLL */
+.comments-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+  background: #5fd0d6;
+  border-radius: 10px;
+}
+
+.comments-list::-webkit-scrollbar-thumb:hover {
+  background: #4ca2cd;
+}
+
+
+/* CADA COMENTARIO */
+.comment {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* AVATAR */
+.comment-avatar {
+  width: 35px;
+  height: 35px;
+  min-width: 35px; /* evita que se encoja */
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ccc;
+}
+
+/* IMAGEN */
+.comment-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ICONO */
+.comment-avatar i {
+  font-size: 22px;
+  color: white;
+}
+
+/* CONTENIDO */
+.comment-content {
+  background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
+  padding: 10px 14px;
+  border-radius: 15px;
+  max-width: 80%;
+
+  word-break: break-word;
+
+  color: #eee;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/*HEADER*/
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /*separación real */
+
+}
+
+/* HOVER BONITO */
+.comment-content:hover {
+  max-width: 100%;
+  overflow: hidden;
+
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* USUARIO */
+.comment-user {
+  font-size: 12px;
+  font-weight: 600;
+
+  color: var(--color-primary);
+
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  padding: 2px 6px;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.08);
+
+  transition: 0.2s ease;
+}
+
+/* TEXTO */
+.comment-text {
+  margin: 2px 0 0;
+  font-size: 14px;
+
+  max-height: 80px;
+  overflow-y: auto;
+
+  /*Ajusta el texto del comentario*/
+  word-break: break-word;      /*  rompe palabras largas */
+  overflow-wrap: break-word;   /*  soporte moderno */
+  white-space: normal; /* por si acaso */
+
+}
+
+/* INPUT BOX */
+.comment-input-box {
+  display: flex;
+  margin-top: 10px;
+  gap: 10px;
+  align-items: center;
+}
+
+/* INPUT */
+.comment-input-box input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+/* FOCUS */
+.comment-input-box input:focus {
+  border-color: #00bcd4;
+  box-shadow: 0 0 5px rgba(0,188,212,0.3);
+}
+
+/* BOTÓN ENVIAR */
+.comment-input-box button {
+  background: #00bcd4;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* HOVER BOTÓN */
+.comment-input-box button:hover {
+  background: #0097a7;
+  transform: scale(1.1);
+}
+
+
+/*comentarios opciones (3 puntos)*/
+.comment-menu-wrapper {
+  position: relative;
+  flex-shrink: 0; /* evita que se comprima */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comment-menu {
+    position: absolute;
+  top: calc(100% + 8px);   /* justo debajo del ícono con separación */
+  right: 0;
+  min-width: 120px;
+  background: rgba(25, 25, 35, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 6px 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.08);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: menuFadeIn 0.2s ease;
+}
+
+.comment-menu button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.comment-menu button:hover {
+  background: rgba(95, 208, 214, 0.2);
+  border: none;
+  color: #f0f0f0;
+  padding: 10px 16px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s;
+  width: 100%;
+  border-radius: 0;
+}
+
+/*Mas visualización*/
+/* Flechita hacia arriba (opcional, muy cute) */
+.comment-menu::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: 12px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent rgba(25, 25, 35, 0.95) transparent;
+}
+
+
+.comment-menu button:first-child {
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.comment-menu button:last-child {
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+
+/*mas visualización */
+.comment-menu-wrapper i {
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+}
+
+.comment-menu-wrapper i:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  transform: scale(1.05);
+
+}
+
+
+/*animación*/
+/* Animación suave */
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/*modo oscuro en comentario*/
+/*
+.dark-mode .comment-content {
+  background: #2a2a2a;
+  color: #eee;
+}
+
+
+.dark-mode .comment-content:hover {
+  background: #333;
+}
+
+
+.dark-mode .comment-input-box input {
+  background: #1e1e1e;
+  border: 1px solid #444;
+  color: white;
+}
+*/
+
+/*Es la prueba*/
+/*
+app-create-post {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(255,0,0,0.5) !important;
+  z-index: 9999 !important;
+}
+*/
+

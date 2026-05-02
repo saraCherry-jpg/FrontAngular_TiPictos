@@ -213,17 +213,48 @@ body.dark-mode .login-input-group input{
 
 .login-theme-toggle{
   position:absolute;
-  top:15px;
-  right:15px;
-  font-size:24px;
-  cursor:pointer;
-  color:var(--color-primary);
+  top:20px;
+  right:20px;
 
+  width:45px;
+  height:45px;
+
+  border-radius:50%;
+  border:none;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+  font-size:18px;
+
+  color:white;
+
+  /* EFECTO GLASS */
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  transition: all 0.3s ease;
+
+  z-index:5;
 }
 
 .login-theme-toggle:hover{
-  transform:scale(1.2);
+  /*transform:scale(1.2);*/
+  transform: scale(1.1) rotate(10deg);
+  background: rgba(255,255,255,0.25);
 }
+
+/* MODO OSCURO */
+body.dark-mode .login-theme-toggle{
+  background: rgba(20,20,40,0.5);
+  color: #ffd369;
+}
+
 
 
 /* =========================================

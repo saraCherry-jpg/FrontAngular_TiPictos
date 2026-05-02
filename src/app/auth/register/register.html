@@ -6,10 +6,9 @@
   <div class="register-card" [class.zoom]="isLoading">
 
     <!-- BOTON CAMBIO DE TEMA -->
-    <div class="register-theme-toggle-inside">
+    <div class="register-theme-toggle-inside" (click)="toggleTheme()">
       <i class="bi"
-         [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"
-         (click)="toggleTheme()">
+         [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'">
       </i>
     </div>
 

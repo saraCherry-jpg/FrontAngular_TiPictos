@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login';
 import { RegisterComponent } from './auth/register/register';
 import { ProfileComponent } from './auth/profileUsers/profileUsers';
 import { Bienvenida } from './auth/welcome/welcome';
+import { EditProfileComponent } from './edit-profile/edit-profile';
 
 //Las rutas
 export const routes: Routes = [
@@ -14,6 +15,7 @@ export const routes: Routes = [
   //{ path: '', redirectTo: 'login', pathMatch: 'full' }, //redirección inicio
   { path: 'login', component: LoginComponent }, //login
   {path: 'register', component: RegisterComponent}, //registro
-  {path: 'profileUsers', component: ProfileComponent} //para el pefil xde usuario
+  {path: 'profileUsers', component: ProfileComponent}, //para el pefil xde usuario
+  {path: 'edit-profile', component: EditProfileComponent} //para editar el perfil
 
 ];
