@@ -1,0 +1,511 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+
+  background: var(--color-background);
+
+  color: var(--color-text);
+}
+
+/* SIDEBAR */
+
+.dashboard-sidebar {
+  width: 240px;
+
+  padding: 25px 20px;
+
+  border-right:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(255,255,255,0.05);
+
+  backdrop-filter: blur(20px);
+
+  position: sticky;
+  top: 0;
+
+  height: 100vh;
+}
+
+/* LOGO */
+/* ===================================== */
+/* LOGO DASHBOARD */
+/* ===================================== */
+
+.dashboard-logo-container {
+
+  display: flex;
+  flex-direction: row; /*column; */
+
+  justify-content: flex-start; /*center; */
+  align-items: center;
+
+  width: 110px;
+  height: 110px;
+
+  gap: -4px;
+  margin-bottom: -8px; /*Ajustes el la distancia del texto*/
+  padding-left: 2px; /*Se meuve hacia un lado*/
+  position: relative;
+  transition: 0.3s ease;
+
+  /*para que el texto no se vea separado*/
+  flex-direction: column;
+  
+  /*muevo el logotipo xd*/
+  transform: translateX(-2px); /*derecha (+), izquierda(-)*/
+
+}
+
+
+
+/* IMAGEN */
+.dashboard-logo-img {
+
+/*Cambio el tamaño de la imagen*/
+  width: 100px;
+  height: 100px;
+
+  object-fit: contain;
+
+  animation:
+    floatLogo 3s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 0 10px rgba(0,0,0,0.25));
+
+  transition: 0.3s ease;
+}
+
+
+
+/*_____________________ ANIMACIÓN LOGOTIPO DEL DASHBOARD  ______________________________*/
+/* CONTENEDOR ANIMACION */
+
+.dashboard-logo-wrapper{
+
+  position: relative;
+
+  width: 95px;
+  height: 95px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+
+}
+
+/*IMAGEN SUPERPUESTAS*/
+/* IMAGENES */
+
+.logo-normal,
+.logo-blink{
+
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+}
+
+
+/*________________  ANIMACIÓN DE PAPADEO DE LOS LOGOS   _________________________*/
+/* LOGO NORMAL */
+.logo-normal{
+  opacity: 1;
+  animation: blinkNormal 4s infinite;
+
+}
+
+/* LOGO PARPADEO */
+.logo-blink{
+  opacity: 0;
+  animation: blinkAlt 4s infinite;
+
+}
+
+
+/* TEXTO */
+.dashboard-logo-text {
+
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 700;  /*bold;*/
+
+  margin-left: 80px; /*izquieda (+), derecha (-)*/
+  margin-top: -40px; /*abajo (+), arriba(-)*/
+
+  letter-spacing: 0.5px;
+
+  color: var(--color-primary);
+  line-height: 1;
+  transition: 0.3s ease;
+
+  /*gap: -90px;*/
+}
+
+/* HOVER */
+
+.dashboard-logo-container:hover .dashboard-logo-img{
+
+  transform: scale(1.05);
+
+}
+
+.dashboard-logo-container:hover .dashboard-logo-text{
+
+  color: var(--color-accent);
+
+}
+
+
+
+
+
+
+/*____________________________________      ANIMACIONES DEL LOGOTIPO    ______________________________________________*/
+
+
+/* ANIMACION */
+@keyframes floatLogo {
+
+  0%{
+    transform: translateY(0px);
+  }
+
+  50%{
+    transform: translateY(-4px);
+  }
+
+  100%{
+    transform: translateY(0px);
+  }
+
+}
+
+
+
+
+/* MENU */
+
+.dashboard-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dashboard-link {
+  border: none;
+
+  background: transparent;
+
+  color: var(--color-text);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+
+  font-size: 15px;
+}
+
+.dashboard-link i {
+  font-size: 20px;
+}
+
+/* HOVER */
+
+.dashboard-link:hover {
+  background:
+    rgba(255,255,255,0.08);
+
+  transform: translateX(3px);
+}
+
+/* ACTIVE */
+
+.dashboard-link.active {
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-accent)
+    );
+
+  color: white;
+}
+
+/* MAIN */
+
+.dashboard-main {
+  flex: 1;
+
+  padding: 25px;
+
+  min-height: 100vh;
+}
+
+/* SEARCH */
+
+.dashboard-search {
+  width: 100%;
+
+  max-width: 750px;
+
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 18px;
+
+  border-radius: 25px;
+
+  background:
+    rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(20px);
+
+  margin-bottom: 50px;
+}
+
+.dashboard-search input {
+  width: 100%;
+
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: var(--color-text);
+
+  font-size: 15px;
+}
+
+/* EMPTY */
+
+.dashboard-empty {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  margin-top: 120px;
+
+  opacity: 0.8;
+}
+
+.dashboard-empty i {
+  font-size: 90px;
+
+  color: var(--color-primary);
+
+  margin-bottom: 20px;
+}
+
+.dashboard-empty h2 {
+  margin-bottom: 10px;
+}
+
+.dashboard-empty p {
+  max-width: 350px;
+}
+
+/* RIGHT BAR */
+
+.dashboard-rightbar {
+  width: 320px;
+
+  padding: 15px 20px;
+
+  border-left:
+    1px solid rgba(255,255,255,0.08);
+
+  background:
+    rgba(255,255,255,0.04);
+
+  backdrop-filter: blur(20px);
+
+  height: 100vh;
+
+  position: sticky;
+  top: 0;
+
+  overflow-y: auto;
+}
+
+.dashboard-rightbar h3 {
+  margin-bottom: 20px;
+}
+
+/* SUGGEST USERS */
+
+.suggest-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 15px;
+
+  padding: 12px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  transition: 0.2s ease;
+}
+
+.suggest-user:hover {
+  background:
+    rgba(255,255,255,0.08);
+}
+
+.suggest-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.suggest-avatar i {
+  font-size: 42px;
+
+  color: var(--color-primary);
+}
+
+.suggest-info h4 {
+  margin: 0;
+}
+
+.suggest-info p {
+  margin: 0;
+
+  font-size: 13px;
+
+  opacity: 0.7;
+}
+
+/* BUTTON */
+
+.suggest-user button {
+  border: none;
+
+  padding: 8px 14px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-accent)
+    );
+
+  color: white;
+
+  transition: 0.2s ease;
+}
+
+.suggest-user button:hover {
+  transform: scale(1.05);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+  .dashboard-rightbar{
+    display:none;
+  }
+
+}
+
+@media(max-width:800px){
+
+  .dashboard-sidebar{
+    width:90px;
+  }
+
+  .dashboard-link span,
+  .dashboard-logo h2{
+    display:none;
+  }
+
+}
+
+
+
+
+
+/* ===================================== */
+/* CREATE POST BUTTON */
+/* ===================================== */
+
+.dashboard-create-post{
+
+  position: fixed;
+
+  right: 30px;
+  bottom: 30px;
+
+  width: 68px;
+  height: 68px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-accent)
+    );
+
+  color: white;
+
+  font-size: 26px;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.25);
+
+  transition: 0.25s ease;
+
+  z-index: 999;
+
+}
+
+/* HOVER */
+
+.dashboard-create-post:hover{
+
+  transform:
+    scale(1.08)
+    rotate(90deg);
+
+}

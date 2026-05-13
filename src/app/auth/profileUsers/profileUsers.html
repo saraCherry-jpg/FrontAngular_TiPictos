@@ -8,8 +8,13 @@
       Cerrar sesión
     </button>
 
-    <div class="profile-cover"></div>
+    <!-- BOTÓN DASHBOARD -->
+    <button class="profile-dashboard-btn"  
+      (click)="goToDashboard()">
+      <i class="bi bi-house-door-fill"></i>
+    </button>
 
+    <div class="profile-cover"></div>
     <div class="profile-info">
 
       <!-- AVATAR -->
@@ -30,8 +35,8 @@
           <i class="bi" [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
         </button>
 
-        <button class="profile-btn-secondary-Follow">Siguiendo</button>
-        <button class="profile-btn-secondary-Followers">Seguidores</button>
+        <button class="profile-btn-secondary-Follow" (click)="openFollowingModal()">Siguiendo</button> 
+        <button class="profile-btn-secondary-Followers" (click)="openFollowersModal()">Seguidores</button>
       </div>
 
       <!-- FAB -->
@@ -87,6 +92,10 @@
 
   </div>
 
+
+
+<!--________________________________________________  MODAL ________________________________________ -->
+
   <!-- ============================= -->
   <!-- MODAL CREATE POST -->
   <!-- ============================= -->
@@ -97,6 +106,8 @@
     (close)="closeCreatePost()"
     (postCreated)="handleNewPost($event)">
   </app-create-post>
+
+
 
   <!-- ============================= -->
   <!-- MODAL POST DETALLE -->
@@ -243,5 +254,106 @@
 
     </div>
   </div>
+
+
+<!-- ============================= -->
+<!-- MODAL FOLLOWERS --- SEGUIDORES  --> 
+<!-- ============================= -->
+<div class="follow-modal-overlay" *ngIf="showFollowersModal">
+
+  <div class="follow-modal-card">
+
+    <button class="follow-close-btn" (click)="closeFollowersModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <h2>Seguidores</h2>
+    <div class="follow-list">
+      <div class="follow-user-card" *ngFor="let follower of followers">
+
+        <div class="follow-user-info">
+          <div class="follow-avatar">
+            <i class="bi bi-person-circle"></i>
+          </div>
+
+          <div>
+            <h4>{{ follower.name }}</h4>
+            <p>@{{ follower.username }}</p>
+          </div>
+        </div>
+
+        <div class="follow-actions">
+          <button class="follow-btn" [class.following]="follower.isFollowing"
+            (click)="followUser(follower)">
+            {{ follower.isFollowing ? 'Siguiendo' : 'Seguir' }}
+          </button>
+
+          <button class="remove-btn" (click)="removeFollower(follower)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+  <!-- ===================================== -->
+  <!-- MODAL FOLLOWING --- SIGUIENDO -->
+  <!-- ===================================== -->
+  <div class="overlay" *ngIf="showFollowingModal">
+
+    <div class="follow-glass-card">
+
+      <!-- HEADER -->
+      <div class="follow-header">
+        <h3>Siguiendo</h3>
+
+        <button 
+          class="close-btn"
+          (click)="closeFollowingModal()">
+          ✕
+        </button>
+
+      </div>
+
+      <!-- LISTA -->
+      <div class="follow-list">
+
+        <div 
+          class="follow-user"
+          *ngFor="let user of following">
+
+          <div class="follow-user-info">
+            <div class="follow-avatar">
+
+              <img *ngIf="user.avatar" [src]="user.avatar">
+              <i *ngIf="!user.avatar" class="bi bi-person-circle"> </i>
+
+            </div>
+
+            <div>
+              <h4>{{ user.name }}</h4>
+              <p>@{{ user.username }}</p>
+            </div>
+
+          </div>
+
+          <div class="follow-user-actions">
+            <button class="following-btn"
+              [class.following]="user.isFollowing"
+              (click)="followUser(user)">{{ user.isFollowing ? 'Siguiendo' : 'Seguir' }}
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 </div>

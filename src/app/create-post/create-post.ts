@@ -19,10 +19,8 @@ export class CreatePostComponent implements OnChanges {
   @Input() postData: any = null;
 
   type: 'text' | 'image' = 'text';
-
   description: string = '';
   hashtags: string = '';
-
   preview: any = null;
   imageBase64: any = null;
 
@@ -41,19 +39,63 @@ export class CreatePostComponent implements OnChanges {
     }
   }
 
-  onFileSelected(event: any){
+
+
+  // NUEVA FUNCIÓN PARA COMPRIMIR IMAGEN
+  compressImage(file: File, maxWidth: number = 800, quality: number = 0.7): Promise<string> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressedBase64);
+        };
+      };
+    });
+  }
+
+
+
+
+
+  // MODIFICADO: ahora comprime la imagen antes de guardarla
+  async onFileSelected(event: any){
     const file = event.target.files[0];
     if(!file) return;
 
-    const reader = new FileReader();
+    //excepciones para que marque error en caso de que la imagen no comprima correctamente... 
+    try {
+      const compressedBase64 = await this.compressImage(file, 800, 0.6);
+      this.preview = compressedBase64;
+      this.imageBase64 = compressedBase64;
+    } catch (error) {
+      console.error('Error al comprimir la imagen:', error);
+      alert('No se pudo procesar la imagen. Intenta con otra.');
+    }
 
-    reader.onload = () => {
-      this.preview = reader.result;
-      this.imageBase64 = reader.result;
-    };
-
-    reader.readAsDataURL(file);
   }
+
+
+
+
 
   //  CREATE o EDIT
   publish(){
@@ -86,13 +128,47 @@ export class CreatePostComponent implements OnChanges {
       reposts: this.postData?.reposts ?? 0,
       repostedBy: this.postData?.repostedBy ?? [], // restringe
 
-
+      //fecha de publicacion
       createdAt: this.postData?.createdAt || new Date()
     };
+
+
+
+
+    /* =========================================
+    GUARDAR POSTS EN LOCALSTORAGE
+    ========================================= */
+
+    // obtener posts guardados
+    const savedPosts = JSON.parse(localStorage.getItem('myPosts') || '[]'); //se modifico el parametro de 'post' a 'mypost'
+
+    // si estamos editando
+    if(this.mode === 'edit'){
+
+      const updatedPosts = savedPosts.map((post:any) =>
+        post.id === newPost.id ? newPost : post
+      );
+
+      localStorage.setItem('myPosts', JSON.stringify(updatedPosts) ); //lo actualiza 
+
+    }else{
+
+      // agregar nuevo post
+      savedPosts.unshift(newPost);
+      localStorage.setItem('myPosts', JSON.stringify(savedPosts));
+
+    }
 
     this.postCreated.emit(newPost);
     this.close.emit();
     
+  } catch (error: { name: string; }) {
+      console.error('Error al publicar:', error);
+      if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+        alert('No hay suficiente espacio de almacenamiento. La imagen es demasiado pesada o hay muchos posts antiguos. Prueba a eliminar algunos posts o usar imágenes más pequeñas.');
+      } else {
+        alert('Ocurrió un error al guardar la publicación.');
+      }
   }
 
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CreatePostComponent } from '../../create-post/create-post';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./profileUsers.css']
 })
 
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
 
   // VARIABLES
   name: string = '';
@@ -25,6 +25,15 @@ export class ProfileComponent {
   editingPost: any = null;
   postToDelete: any;
   newComment: string = '';
+
+  //Nuevas variables para trabajar con Follow y followers
+  showFollowersModal: boolean = false;
+  showFollowingModal: boolean = false;
+
+  followers: any[] = [];
+  following: any[] = [];
+  user: any;
+   
 
   constructor(private router: Router){}
 
@@ -41,11 +50,20 @@ export class ProfileComponent {
 
     //localStorage.removeItem('myPosts'); //prueba BORRO TODO LOS POST QUE TENIA PUBLICADO XD
     this.loadUser();
+    this.loadFollowers();
+
+    //Carga el perfil
+    this.loadPosts();
+
+
+     
 
     window.addEventListener('focus', () => { //Recarga todo el profile cuando terminas de editars
       this.loadUser();
     }); 
 
+
+    //Carga del tema oscuro
     const theme = localStorage.getItem('theme');
 
     if(theme === 'dark'){
@@ -59,8 +77,10 @@ export class ProfileComponent {
     }
 
     //PARA QUE GUARDE LA PUBLICACIÓN CORRECTAMENTE
+    /*
     const savedPosts = JSON.parse(localStorage.getItem('myPosts') || '[]');
     this.posts = savedPosts;
+    */
 
 
     //arregla los comentarios viejos
@@ -84,10 +104,22 @@ export class ProfileComponent {
 
   }
 
+
+
+
+  //Carga el post desde el profile
+  loadPosts() {
+    const savedPosts =
+    JSON.parse(localStorage.getItem('myPosts') || '[]'); //mucho cuidado como declaras los parametros
+
+    this.posts = savedPosts;
+  }
+
+
+
   /*Cargar usuario y arrastra los datos*/
   loadUser() {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
     console.log("USER:", user); //  DEBUG
 
     this.name = user.name;
@@ -95,6 +127,148 @@ export class ProfileComponent {
     this.avatar = user.avatar || '';
     this.bio = user.bio || '';
   }
+
+
+  //cargar el post
+
+
+  //Carga Followers y Follow
+  loadFollowers(){
+
+    //Carga y almacena datos
+    const savedFollowers =
+      JSON.parse(localStorage.getItem('followers') || '[]');
+
+    const savedFollowing =
+      JSON.parse(localStorage.getItem('following') || '[]');
+
+    //Asigna
+    this.followers = savedFollowers;
+    this.following = savedFollowing;
+
+    
+
+
+    //Son PRUEBAS TEMPORAL (Se supone que ya tenemos el login y register y pues podemos acceder)
+    
+    /*  PD: Mas delante hare las funcionalidaddes de true o false con el isFollowig:
+     sin imporar el usuario que aparezca, ya que debe estar estar almacenados los usuarios
+     en el sistema con el simple fin de que se encuentre registrando
+     y por ende el boton lo pueda hacer funcional correctamente "seguir" "eliminar"  */
+    
+
+    /* 
+    // DEMO TEMPORAL
+    if(this.followers.length === 0){
+
+      this.followers = [
+
+        {
+          name: 'Ana',
+          username: 'ana_dev',
+          avatar: '',
+          isFollowing: false //no lo sigues 
+        },
+
+        {
+          name: 'Luis',
+          username: 'luis_art',
+          avatar: '',
+          isFollowing: true //si lo sigues 
+        },
+
+        {
+          name: 'Carlos',
+          username: 'carlos_js',
+          avatar: '',
+          isFollowing: false
+        }
+
+      ];
+
+      this.following = this.followers.filter(
+        u => u.isFollowing
+      );
+    }
+
+    */
+  }
+
+
+
+  // ABRIR / CERRAR MODALS
+  // =====================================
+  openFollowersModal(){
+    this.showFollowersModal = true;
+  }
+
+  closeFollowersModal(){
+    this.showFollowersModal = false;
+  }
+
+  openFollowingModal(){
+    this.showFollowingModal = true;
+  }
+
+  closeFollowingModal(){
+    this.showFollowingModal = false;
+  }
+
+
+
+  // SEGUIR USUARIO
+  // =====================================
+  followUser(user: any){
+    user.isFollowing = !user.isFollowing;
+
+    // SI AHORA LO SIGUES
+    if(user.isFollowing){
+
+      const exists = this.following.find(
+        u => u.username === user.username
+      );
+
+      if(!exists){
+        this.following.push(user);
+      }
+
+    } else {
+
+      // SI DEJAS DE SEGUIR
+      this.following = this.following.filter(
+        u => u.username !== user.username
+      );
+    }
+
+    // GUARDAR FOLLOWING
+    localStorage.setItem(
+      'following',
+      JSON.stringify(this.following)
+    );
+
+    // GUARDAR FOLLOWERS ACTUALIZADO
+    localStorage.setItem(
+      'followers',
+      JSON.stringify(this.followers)
+    );
+  }
+
+
+// ELIMINAR FOLLOWER
+// =====================================
+  removeFollower(user: any){
+
+    this.followers =
+      this.followers.filter(
+        u => u.username !== user.username
+      );
+
+    localStorage.setItem(
+      'followers',
+      JSON.stringify(this.followers)
+    );
+  }
+
 
 
   /*PARA ABRIR O CERRAR EN CREAR PUBLICACIÓN */
@@ -112,18 +286,11 @@ export class ProfileComponent {
 
   /*PARA RECIBIR EL POST*/
   handleNewPost(post: any){
-    if(this.editingPost){
-      const index = this.posts.findIndex(p => p.id === post.id); //editar
 
-      if(index !== -1){
-        this.posts[index] = post;
-      }
-      this.editingPost = null;
+    this.loadPosts();
+    this.editingPost = null;
+    this.closeCreatePost();
 
-    } else {
-      this.posts.unshift(post); //crear
-    }
-    localStorage.setItem('myPosts', JSON.stringify(this.posts));
   }
 
 
@@ -137,7 +304,7 @@ export class ProfileComponent {
     if (!this.postToDelete) return;
     this.posts = this.posts.filter(p => p !== this.postToDelete);
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts)); //  faltaba esto (no estaba almacenando la eliminación xddd)
+    localStorage.setItem('myPosts', JSON.stringify(this.posts)); //  faltaba esto (no estaba almacenando la eliminación xddd)   || cuidado como nombras los parametros ''
 
     this.postToDelete = null;
     this.selectedPost = null; //  cerrar modal también
@@ -175,7 +342,7 @@ export class ProfileComponent {
       post.likes--;
     }
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts));
+    localStorage.setItem('myPosts', JSON.stringify(this.posts)); //cuidar los parametros
   }
 
   //______________________  COMENTARIOS __________________________
@@ -199,7 +366,8 @@ export class ProfileComponent {
     post.comments.push(newComment); //Ya almcena de forma segura
     this.newComment = '';
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts));
+    localStorage.setItem('myPosts', JSON.stringify(this.posts)); 
+    //cuida el nombre del parametro 'myPosts' evitalos y que todos sean iguales..
 
   }
 
@@ -269,6 +437,13 @@ export class ProfileComponent {
     }
 
   }
+
+
+  //DASHBOARD
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
 
 
   // CERRAR SESIÓN

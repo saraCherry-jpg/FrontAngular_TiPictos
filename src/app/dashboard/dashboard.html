@@ -1,0 +1,143 @@
+<div class="dashboard-container">
+  <aside class="dashboard-sidebar"><!-- SIDEBAR -->
+
+    <div class="dashboard-logo-container"><!-- LOGO -->
+      <img src="assets/imagenes/TiPictosLogo.png" alt="TiPictos" class="dashboard-logo-img"> <!--Logotipo normal-->
+
+    </div>
+      <h2 class="dashboard-logo-text">TiPictos</h2>
+
+      <!-- LOGO PARPADEO -->
+  <img>
+
+    <!-- MENU -->
+    <nav class="dashboard-menu">
+
+      <button class="dashboard-link active">
+        <i class="bi bi-house-door-fill"></i>
+        <span>Inicio</span>
+      </button>
+
+      <button class="dashboard-link">
+        <i class="bi bi-search"></i>
+        <span>Explorar</span>
+      </button>
+
+      <button class="dashboard-link">
+        <i class="bi bi-chat-dots-fill"></i>
+        <span>Mensajes</span>
+      </button>
+
+      <button class="dashboard-link">
+        <i class="bi bi-bell-fill"></i>
+        <span>Actividad</span>
+      </button>
+
+      <button class="dashboard-link"
+        (click)="goToProfile()">
+        <i class="bi bi-person-fill"></i>
+        <span>Perfil</span>
+      </button>
+
+      <button class="dashboard-link">
+        <i class="bi bi-gear-fill"></i>
+        <span>Configuración</span>
+      </button>
+
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dashboard-main">
+
+    <!-- SEARCH -->
+    <div class="dashboard-search">
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        placeholder="Buscar en TiPictos...">
+
+    </div>
+
+    <!-- EMPTY FEED -->
+    <div class="dashboard-empty">
+      <i class="bi bi-image"></i>
+
+      <h2>Tu feed está vacío</h2>
+
+      <p>
+        Sigue usuarios o crea publicaciones
+        para comenzar 
+      </p>
+
+    </div>
+
+    <!-- BOTON CREAR POST -->
+    <button
+      class="dashboard-create-post"
+      (click)="openCreatePost()">
+
+      <i class="bi bi-plus-lg"></i>
+    </button>
+
+
+    <div class="feed-posts-grid" *ngIf="posts.length > 0">
+      <div class="feed-post-card" *ngFor="let post of posts">
+        <img *ngIf="post.type === 'image'" [src]="post.image">
+        <div *ngIf="post.type === 'text'" class="text-post">
+          {{ post.description }}
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHTBAR -->
+  <aside class="dashboard-rightbar">
+
+    <h3>Sugerencias</h3>
+
+    <!-- USER -->
+    <div
+      class="suggest-user"
+      *ngFor="let user of suggestedUsers">
+
+      <div class="suggest-info">
+
+        <div class="suggest-avatar">
+          <i class="bi bi-person-circle"></i>
+        </div>
+
+        <div>
+          <h4>{{ user.name }}</h4>
+          <p>@{{ user.username }}</p>
+        </div>
+
+      </div>
+
+      <button (click)="followUser(user)">
+        Seguir
+      </button>
+
+    </div>
+
+  </aside>
+
+
+
+
+  <!--_____________________________________________   INICIAMOS CON EL MODAL ______________________________ -->
+  
+  <!-- MODAL CREATE POST -->
+  <app-create-post
+
+    *ngIf="showCreatePost"
+    (close)="closeCreatePost()"
+    (postCreated)="handleNewPost($event)"> <!--Se modifico (postCreated)="closeCreatePost()" -->
+
+  </app-create-post>
+
+
+</div>
