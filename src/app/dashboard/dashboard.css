@@ -8,17 +8,14 @@
 }
 
 /* SIDEBAR */
-
 .dashboard-sidebar {
   width: 240px;
-
   padding: 25px 20px;
 
   border-right:
     1px solid rgba(255,255,255,0.08);
 
-  background:
-    rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.05);
 
   backdrop-filter: blur(20px);
 
@@ -253,17 +250,71 @@
 
 .dashboard-main {
   flex: 1;
-
   padding: 25px;
-
   min-height: 100vh;
 }
 
-/* SEARCH */
 
+
+
+/*________________________________   FEED POST  _____________________________________*/
+/* ===================================== */
+/* FEED POSTS */
+/* ===================================== */
+
+.feed-posts-grid{
+  column-count: 4;
+  column-gap: 18px;
+
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+}
+
+
+.feed-post-card{  /* CARD */
+  break-inside: avoid;
+  margin-bottom: 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: 0.25s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+
+.feed-post-card:hover{ /* HOVER */
+  transform: translateY(-4px) scale(1.01);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+
+.feed-post-card img{  /* IMAGEN */
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+
+.text-post{ /* TEXTO */
+  padding: 18px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+
+
+
+
+
+/* SEARCH */
 .dashboard-search {
   width: 100%;
-
   max-width: 750px;
 
   margin: auto;
@@ -276,11 +327,9 @@
 
   border-radius: 25px;
 
-  background:
-    rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.08); /*COLOR DE LA BARRA DEL BUSCADOR"*/
 
   backdrop-filter: blur(20px);
-
   margin-bottom: 50px;
 }
 
@@ -296,8 +345,25 @@
   font-size: 15px;
 }
 
-/* EMPTY */
 
+.dashboard-search input::placeholder {
+  color: var(--color-text);
+  opacity: 0.55;          /* Suave pero legible */
+  transition: opacity 0.2s ease;
+}
+
+.dashboard-search input:focus::placeholder {
+  opacity: 0.3;           /* Al enfocar, se vuelve más sutil */
+}
+
+
+
+
+
+
+
+
+/* EMPTY */
 .dashboard-empty {
   display: flex;
   flex-direction: column;
@@ -329,25 +395,19 @@
 }
 
 /* RIGHT BAR */
-
 .dashboard-rightbar {
   width: 320px;
-
   padding: 15px 20px;
 
   border-left:
     1px solid rgba(255,255,255,0.08);
 
-  background:
-    rgba(255,255,255,0.04);
-
+  background:  rgba(255,255,255,0.04);
   backdrop-filter: blur(20px);
 
   height: 100vh;
-
   position: sticky;
   top: 0;
-
   overflow-y: auto;
 }
 
@@ -355,9 +415,9 @@
   margin-bottom: 20px;
 }
 
-/* SUGGEST USERS */
 
-.suggest-user {
+
+.suggest-user { /* SUGGEST USERS/ SUGERENCIAS DE USUSARIOS */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -500,12 +560,186 @@
 
 }
 
-/* HOVER */
 
-.dashboard-create-post:hover{
+.dashboard-create-post:hover{ /* HOVER */
 
   transform:
     scale(1.08)
     rotate(90deg);
 
 }
+
+
+/*________________________________________   SETTING / CONFIGURACIÓN    ____________________________________*/
+/* ===================================== */
+/* SETTINGS MODAL */
+/* ===================================== */
+
+.settings-modal{
+  width: 400px;
+
+}
+
+
+/* HEADER */
+.settings-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+
+}
+
+
+.settings-header h3{
+  margin: 0;
+  color: var(--color-text);
+
+}
+
+
+/* OPCIONES */
+.settings-options{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  /*background: rgba(255, 255, 255, 0.08);*/
+  /*se mantendra por defecto el fondo blaco*/
+
+}
+
+
+/* BOTONES */
+.settings-option{
+  width: 100%;
+  padding: 16px;
+
+  border: none;
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  font-size: 15px;
+  color: var(--color-text);
+
+  background:rgba(255,255,255,0.08);
+  transition: 0.25s ease;
+
+}
+
+
+/* ICONOS */
+.settings-option i{
+  font-size: 22px;
+
+}
+
+
+/* HOVER */
+.settings-option:hover{
+
+  transform:
+    translateY(-2px)
+    scale(1.01);
+
+  background:
+    rgba(255,255,255,0.12);
+
+}
+
+
+/* LOGOUT */
+.settings-option.logout{
+  background:
+    rgba(255, 80, 80, 0.12);
+
+  color: #ff6b6b;
+
+}
+
+
+/* ===================================== */
+/* OVERLAY */
+/* ===================================== */
+
+.overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(18px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: fadeIn 0.25s ease;
+
+}
+
+
+/* GLASS CARD */
+.glass-card{
+  padding: 25px;
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.08),
+      rgba(255,255,255,0.03)
+    );
+
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+
+}
+
+
+/* CLOSE BTN */
+.close-btn{
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  color: var(--color-text);
+  background: rgba(255,255,255,0.08);
+  transition: 0.25s ease;
+
+}
+
+
+.close-btn:hover{
+  background: var(--color-accent);
+  color: white;
+  transform: scale(1.08) rotate(8deg);
+
+}
+
+
+
+/* ANIMACION */
+@keyframes fadeIn{
+  from{
+    opacity: 0;
+  }
+
+  to{
+    opacity: 1;
+  }
+
+}
+
+

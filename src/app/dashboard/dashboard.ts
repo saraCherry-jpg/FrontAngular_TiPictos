@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CreatePostComponent } from '../create-post/create-post';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   
-  imports: [CommonModule, CreatePostComponent],
+  imports: [CommonModule, CreatePostComponent, FormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -18,8 +19,13 @@ export class Dashboard implements OnInit {
   constructor(private router: Router){}
 
   //VARIABLES DECLARADAS:
+  //Para post
   showCreatePost = false;
   posts: any[] = []; // POSTS
+
+ //Para el boton de configuración
+  showSettingsModal = false;  //Setting / configuración
+  isDarkMode: boolean = false;  // DARK MODE
 
 
   //_______________________________   METODOS   _____________________________________________________
@@ -28,6 +34,27 @@ export class Dashboard implements OnInit {
   //inicializa el dashboard
   ngOnInit(): void {
     this.loadPosts();
+    this.loadTheme();
+
+  }
+
+  // CARGA EL TEMA OSCURO
+  loadTheme() {
+    const theme = localStorage.getItem('theme');
+
+    if(theme === 'dark'){
+
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+
+      this.isDarkMode = true;
+
+    }else{
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+
+      this.isDarkMode = false;
+    }
   }
 
   //carga los poast
@@ -38,8 +65,6 @@ export class Dashboard implements OnInit {
     this.posts = savedPosts;
 
   }
-
-
 
   // CREATE POST
   openCreatePost(){
@@ -112,10 +137,55 @@ export class Dashboard implements OnInit {
   
 
 
+
+
+  //___________________________________________ En las configuraciones _____________________________
+  openSettingsModal() {
+    this.showSettingsModal = true;
+  }
+
+  closeSettingsModal() {
+    this.showSettingsModal = false;
+  }
+
+
+
+  // _______________________________________________ TEMA OSCURO  ________________________________________
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+
+    if(this.isDarkMode){
+
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+
+      localStorage.setItem('theme', 'dark'); //lo almacena
+
+    }else{
+
+      document.body.classList.remove('dark-mode');
+      document.body.classList.add('light-mode');
+
+      localStorage.setItem('theme', 'light'); //lo almacena 
+    }
+  }
+
+
   //____________________________________ ACCEDER A PROFILE USER _________________________
  
   goToProfile(){
     this.router.navigate(['/profileUsers']);
+  }
+
+  //___________________________________________ Salir de Sesión / Cerrar Sesión / Logout ____________________________
+  logout() {
+    localStorage.removeItem('currentUser'); //Cerrar Sesion actualmente
+
+    // opcional:
+    // localStorage.clear();
+
+    // redirección login
+    this.router.navigate(['/login']);
   }
 
 }

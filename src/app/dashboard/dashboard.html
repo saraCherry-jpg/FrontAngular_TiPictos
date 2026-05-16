@@ -4,11 +4,7 @@
     <div class="dashboard-logo-container"><!-- LOGO -->
       <img src="assets/imagenes/TiPictosLogo.png" alt="TiPictos" class="dashboard-logo-img"> <!--Logotipo normal-->
 
-    </div>
-      <h2 class="dashboard-logo-text">TiPictos</h2>
-
-      <!-- LOGO PARPADEO -->
-  <img>
+    </div><h2 class="dashboard-logo-text">TiPictos</h2><img> <!-- LOGO PARPADEO -->
 
     <!-- MENU -->
     <nav class="dashboard-menu">
@@ -39,7 +35,8 @@
         <span>Perfil</span>
       </button>
 
-      <button class="dashboard-link">
+      <button class="dashboard-link"
+       (click)="openSettingsModal()">
         <i class="bi bi-gear-fill"></i>
         <span>Configuración</span>
       </button>
@@ -62,7 +59,8 @@
     </div>
 
     <!-- EMPTY FEED -->
-    <div class="dashboard-empty">
+    <div class="dashboard-empty"
+      *ngIf="posts.length === 0"> <!--Creo la condición del mensaje cuando no hay publicación o es muy nueva la aplicación-->
       <i class="bi bi-image"></i>
 
       <h2>Tu feed está vacío</h2>
@@ -138,6 +136,61 @@
     (postCreated)="handleNewPost($event)"> <!--Se modifico (postCreated)="closeCreatePost()" -->
 
   </app-create-post>
+
+
+
+  <!-- MODAL CONFIGURACIÓN -->
+  <div
+    *ngIf="showSettingsModal"
+    class="overlay">
+
+    <div class="glass-card settings-modal">
+
+      <!-- HEADER -->
+      <div class="settings-header">
+
+        <h3>Configuración</h3>
+
+        <button
+          class="close-btn"
+          (click)="closeSettingsModal()">✕
+        </button>
+
+      </div>
+
+      <!-- OPCIONES -->
+      <div class="settings-options">
+
+        <!-- DARK MODE -->
+        <button
+          class="settings-option"
+          (click)="toggleTheme()">
+
+          <i
+            class="bi"
+            [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'">
+          </i>
+
+          <span>
+            {{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro' }}
+          </span>
+
+        </button>
+
+        <!-- LOGOUT -->
+        <button
+          class="settings-option logout"
+          (click)="logout()">
+
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Cerrar sesión</span>
+
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
 
 
 </div>
