@@ -48,12 +48,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(){
 
-    //localStorage.removeItem('myPosts'); //prueba BORRO TODO LOS POST QUE TENIA PUBLICADO XD
+    //localStorage.removeItem('allPosts'); //prueba BORRO TODO LOS POST QUE TENIA PUBLICADO XD
     this.loadUser();
     this.loadFollowers();
 
     //Carga el perfil
-    this.loadPosts();
+    this.loadPosts(); //allPosts
 
 
      
@@ -109,10 +109,26 @@ export class ProfileComponent implements OnInit {
 
   //Carga el post desde el profile
   loadPosts() {
-    const savedPosts =
-    JSON.parse(localStorage.getItem('myPosts') || '[]'); //mucho cuidado como declaras los parametros
 
-    this.posts = savedPosts;
+    //para tener un buen manejo de los usuarios
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    //Post guardados o cargados    ----------->   filtro para que cargue las publicaciones (antes se llamaba Posts)
+    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]'); //mucho cuidado como declaras los parametros //puede ser el causante
+    
+    this.posts = allPosts.filter(
+      (post: any) =>
+      post.user === currentUser.username
+      
+    ).sort(
+        (a: any, b: any) =>
+        new Date(b.createdAt).getTime()-
+        new Date(a.createdAt).getTime()
+      );
+
+
+
+    //this.posts = savedPosts;
   }
 
 
@@ -287,7 +303,7 @@ export class ProfileComponent implements OnInit {
   /*PARA RECIBIR EL POST*/
   handleNewPost(post: any){
 
-    this.loadPosts();
+    this.loadPosts(); //recarga 'allPost'
     this.editingPost = null;
     this.closeCreatePost();
 
@@ -302,12 +318,17 @@ export class ProfileComponent implements OnInit {
   //CONFIRMA ELIMINACIÓN DEL POST
   confirmDelete() {
     if (!this.postToDelete) return;
-    this.posts = this.posts.filter(p => p !== this.postToDelete);
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts)); //  faltaba esto (no estaba almacenando la eliminación xddd)   || cuidado como nombras los parametros ''
+    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+    const updatedPosts = allPosts.filter((p: any) => p.id !== this.postToDelete.id);
+
+    localStorage.setItem('allPosts', JSON.stringify(updatedPosts));
+
+    this.loadPosts();
 
     this.postToDelete = null;
-    this.selectedPost = null; //  cerrar modal también
+    this.selectedPost = null; 
+
   }
 
 
@@ -334,7 +355,7 @@ export class ProfileComponent implements OnInit {
 
   //Corazones
   toggleLike(post: any) { //el parametro es post no args
-     post.liked = !post.liked;
+    post.liked = !post.liked;
 
     if(post.liked){
       post.likes++;
@@ -342,7 +363,11 @@ export class ProfileComponent implements OnInit {
       post.likes--;
     }
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts)); //cuidar los parametros
+    //se agrega constantes 
+    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+    const updatedPosts = allPosts.map((p: any) => p.id === post.id ? post : p);
+
+    localStorage.setItem('allPosts', JSON.stringify(updatedPosts)); //cuidar los parametros
   }
 
   //______________________  COMENTARIOS __________________________
@@ -366,7 +391,7 @@ export class ProfileComponent implements OnInit {
     post.comments.push(newComment); //Ya almcena de forma segura
     this.newComment = '';
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts)); 
+    localStorage.setItem('allPosts', JSON.stringify(this.posts)); 
     //cuida el nombre del parametro 'myPosts' evitalos y que todos sean iguales..
 
   }
@@ -381,7 +406,7 @@ export class ProfileComponent implements OnInit {
   deleteComment(post: any, comment: any) {
     post.comments = post.comments.filter((c: any) => c.id !== comment.id);
 
-    localStorage.setItem('myPosts', JSON.stringify(this.posts));
+    localStorage.setItem('allPosts', JSON.stringify(this.posts));
     
   }
 
@@ -411,7 +436,7 @@ export class ProfileComponent implements OnInit {
       post.reposts = (post.reposts || 0) + 1;
     }
     
-    localStorage.setItem('myPosts', JSON.stringify(this.posts));
+    localStorage.setItem('allPosts', JSON.stringify(this.posts));
   }
 
 

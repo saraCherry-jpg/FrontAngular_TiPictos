@@ -1,10 +1,15 @@
 <div class="dashboard-container">
-  <aside class="dashboard-sidebar"><!-- SIDEBAR -->
+  <aside class="dashboard-sidebar"> <!-- SIDEBAR -->
 
-    <div class="dashboard-logo-container"><!-- LOGO -->
-      <img src="assets/imagenes/TiPictosLogo.png" alt="TiPictos" class="dashboard-logo-img"> <!--Logotipo normal-->
+    <!-- LOGO -->
+    <div class="dashboard-logo-container">
+      <img
+        src="assets/imagenes/TiPictosLogo.png"
+        alt="TiPictos"
+        class="dashboard-logo-img">
+    </div>
 
-    </div><h2 class="dashboard-logo-text">TiPictos</h2><img> <!-- LOGO PARPADEO -->
+    <h2 class="dashboard-logo-text">TiPictos</h2>
 
     <!-- MENU -->
     <nav class="dashboard-menu">
@@ -29,67 +34,102 @@
         <span>Actividad</span>
       </button>
 
-      <button class="dashboard-link"
+      <button
+        class="dashboard-link"
         (click)="goToProfile()">
         <i class="bi bi-person-fill"></i>
         <span>Perfil</span>
       </button>
 
-      <button class="dashboard-link"
-       (click)="openSettingsModal()">
+      <button
+        class="dashboard-link"
+        (click)="openSettingsModal()">
+
         <i class="bi bi-gear-fill"></i>
         <span>Configuración</span>
       </button>
 
     </nav>
-
   </aside>
 
   <!-- MAIN -->
   <main class="dashboard-main">
-
-    <!-- SEARCH -->
-    <div class="dashboard-search">
+    <div class="dashboard-search"> <!-- SEARCH -->
       <i class="bi bi-search"></i>
-
       <input
         type="text"
         placeholder="Buscar en TiPictos...">
 
     </div>
 
-    <!-- EMPTY FEED -->
-    <div class="dashboard-empty"
-      *ngIf="posts.length === 0"> <!--Creo la condición del mensaje cuando no hay publicación o es muy nueva la aplicación-->
+    <!-- EMPTY -->
+    <div
+      class="dashboard-empty"
+      *ngIf="posts.length === 0"> <!--Genera la condición si el post esta vacio -->
       <i class="bi bi-image"></i>
-
       <h2>Tu feed está vacío</h2>
-
       <p>
         Sigue usuarios o crea publicaciones
-        para comenzar 
+        para comenzar
       </p>
 
     </div>
 
-    <!-- BOTON CREAR POST -->
+    <!-- CREATE POST -->
     <button
       class="dashboard-create-post"
       (click)="openCreatePost()">
 
       <i class="bi bi-plus-lg"></i>
+
     </button>
 
+    <!-- POSTS -->
+    <div
+      class="feed-posts-grid"
+      *ngIf="posts.length > 0">
 
-    <div class="feed-posts-grid" *ngIf="posts.length > 0">
-      <div class="feed-post-card" *ngFor="let post of posts">
-        <img *ngIf="post.type === 'image'" [src]="post.image">
-        <div *ngIf="post.type === 'text'" class="text-post">
+      <div
+        class="feed-post-card"
+        *ngFor="let post of posts">
+
+        <!-- OVERLAY -->
+        <div class="feed-hover">
+
+          <span>
+            <i class="bi bi-heart"></i>
+            {{ post.likes || 0 }}
+          </span>
+
+          <span>
+            <i class="bi bi-chat"></i>
+            {{ post.comments?.length || 0 }}
+          </span>
+
+          <span>
+            <i class="bi bi-repeat"></i>
+            {{ post.reposts || 0 }}
+          </span>
+
+        </div>
+
+        <!-- IMAGE -->
+        <img
+          *ngIf="post.type === 'image'"
+          [src]="post.image"
+          (click)="openPostDetail(post)">
+
+        <!-- TEXT -->
+        <div
+          *ngIf="post.type === 'text'"
+          class="text-post"
+          (click)="openPostDetail(post)">
+
           {{ post.description }}
+
         </div>
       </div>
     </div>
-
   </main>
 
   <!-- RIGHTBAR -->
@@ -97,7 +137,6 @@
 
     <h3>Sugerencias</h3>
 
-    <!-- USER -->
     <div
       class="suggest-user"
       *ngFor="let user of suggestedUsers">
@@ -123,42 +162,35 @@
 
   </aside>
 
-
-
-
-  <!--_____________________________________________   INICIAMOS CON EL MODAL ______________________________ -->
-  
-  <!-- MODAL CREATE POST -->
+  <!--______________________________________________    TOCANDO TERRENO MODAL _______________________________ -->
+  <!-- CREATE POST MODAL -->
   <app-create-post
-
     *ngIf="showCreatePost"
+
+    [mode]="editingPost ? 'edit' : 'create'"
+    [postData]="editingPost"
+
     (close)="closeCreatePost()"
-    (postCreated)="handleNewPost($event)"> <!--Se modifico (postCreated)="closeCreatePost()" -->
+    (postCreated)="handleNewPost($event)">
 
   </app-create-post>
 
-
-
-  <!-- MODAL CONFIGURACIÓN -->
+  <!-- SETTINGS MODAL -->
   <div
     *ngIf="showSettingsModal"
     class="overlay">
 
     <div class="glass-card settings-modal">
-
-      <!-- HEADER -->
       <div class="settings-header">
-
         <h3>Configuración</h3>
 
         <button
           class="close-btn"
-          (click)="closeSettingsModal()">✕
+          (click)="closeSettingsModal()">
+          ✕
         </button>
-
       </div>
 
-      <!-- OPCIONES -->
       <div class="settings-options">
 
         <!-- DARK MODE -->
@@ -183,14 +215,180 @@
           (click)="logout()">
 
           <i class="bi bi-box-arrow-right"></i>
-          <span>Cerrar sesión</span>
 
+          <span>Cerrar sesión</span>
         </button>
       </div>
     </div>
   </div>
 
+  <!-- POST DETAIL / POST REVIEW -->
+  <div
+    class="post-modal"
+    *ngIf="selectedPost" 
+    (click)="closePostDetail()">
+    
+
+    <div class="post-viewe-card"
+      (click)="$event.stopPropagation()">
+
+      <!-- CLOSE -->
+      <button
+        class="close-btn"
+        (click)="closePostDetail()">
+
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+      <!-- MEDIA -->
+      <div class="post-media">
+        <!-- IMAGE -->
+        <img
+          *ngIf="selectedPost.type === 'image'"
+          [src]="selectedPost.image"
+          class="post-image">
+
+        <!-- TEXT -->
+        <div
+          *ngIf="selectedPost.type === 'text'"
+          class="text-post modal-text-post">
+
+          <p>{{ selectedPost.description }}</p>
+        </div>
+
+      </div>
+
+      <!-- CONTENT -->
+      <div class="post-content">
+        <div class="post-social"> <!-- SOCIAL -->
+
+          <!-- LIKE -->
+          <span (click)="toggleLike(selectedPost)">
+
+            <i
+              class="bi"
+              [ngClass]="selectedPost.liked ? 'bi-heart-fill' : 'bi-heart'">
+            </i>
+            {{ selectedPost.likes || 0 }}
+          </span>
+
+          <!-- COMMENTS -->
+          <span>
+            <i class="bi bi-chat"></i>
+            {{ selectedPost.comments?.length || 0 }}
+          </span>
+
+          <!-- REPOST -->
+          <span (click)="repost(selectedPost)">
+
+            <i
+              class="bi"
+              [ngClass]="selectedPost.repostedBy?.includes(username)
+              ? 'bi-repeat text-success'
+              : 'bi-repeat'">
+            </i>
+
+            {{ selectedPost.reposts || 0 }}
+
+          </span>
+
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="post-description">
+          <p>{{ selectedPost.description }}</p>
+
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="comments-section">
+          <div class="comments-list">
+
+            <div
+              *ngFor="let c of selectedPost.comments"
+              class="comment">
+
+              <!-- AVATAR -->
+              <div class="comment-avatar">
+
+                <img
+                  *ngIf="c.avatar"
+                  [src]="c.avatar">
+
+                <i
+                  *ngIf="!c.avatar"
+                  class="bi bi-person-circle">
+                </i>
+
+              </div>
+
+              <!-- CONTENT -->
+              <div class="comment-content">
+                <span class="comment-user">
+                  @{{ c.user }}
+                </span>
+
+                <p class="comment-text">
+                  {{ c.text }}
+                </p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INPUT -->
+        <div class="comment-input-box">
+
+          <input
+            type="text"
+            [(ngModel)]="newComment"
+            placeholder="Escribe un comentario...">
+
+          <button (click)="addComment(selectedPost)">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </div>
+
+        <!-- TAGS -->
+        <div
+          class="post-tags"
+          *ngIf="selectedPost.hashtags?.length">
+
+          <span *ngFor="let tag of selectedPost.hashtags">
+            #{{ tag }}
+          </span>
+
+        </div>
+
+        <small>
+          {{ selectedPost.createdAt | date:'short' }}
+        </small>
+      </div>
+
+      <!-- ACTIONS -->
+      <div
+        class="post-actions"
+        *ngIf="selectedPost.user === username"> <!-- condición del autor del POST -->
+
+        <!-- EDIT -->
+        <button (click)="editPost(selectedPost)">
+          <i class="bi bi-pencil"></i>
+        </button>
+
+        <!-- DELETE -->
+        <button (click)="deletePost(selectedPost)">
+          <i class="bi bi-trash"></i>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
   
+
+
 
 
 </div>

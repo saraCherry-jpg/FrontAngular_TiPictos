@@ -24,6 +24,7 @@ export class CreatePostComponent implements OnChanges {
   preview: any = null;
   imageBase64: any = null;
 
+  //user: undefined; //nueva variable para el user
   //isEditMode: boolean = false;
 
   //  Detecta cuando llega un post
@@ -47,6 +48,7 @@ export class CreatePostComponent implements OnChanges {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
+
         const img = new Image();
         img.src = event.target?.result as string;
         img.onload = () => {
@@ -97,15 +99,19 @@ export class CreatePostComponent implements OnChanges {
 
 
 
-  //  CREATE o EDIT
+  //____________________________________________________ CREATE o EDIT  ___________________________________________________
   publish(){
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); //
+    console.log(currentUser); //Verifica como guardo el usuario..
 
-     const newPost = {
+    const newPost = {
       id: this.postData ? this.postData.id : Date.now(), // mantiene ID si edita
 
-      //Lo del perfil 
-      user: this.postData?.user || 'Tú', // importante para profile
-      avatar: this.postData?.avatar || null,
+      //Lo del perfil  ------------------> todo se cambia a currentUser
+      user: currentUser.username, // importante para profile 
+      avatar: currentUser.avatar || null, 
+
+      //PD: Agregar el "name" es opcional, pero se ve mejor sin el name / nombre:
 
       type: this.type,
       description: this.description,
@@ -136,11 +142,15 @@ export class CreatePostComponent implements OnChanges {
 
 
     /* =========================================
-    GUARDAR POSTS EN LOCALSTORAGE
+    GUARDAR POSTS EN LOCALSTORAGE:
+
+    //PD: Ya no usaremos el parametro 'myPosts', porque suena a muy personal o nuestro
+    //  a hacerlas mejor global y para todos e incluso identificando el tipo de usuario
+    // de como intereactua en una red social que es lo que nos interesa, y lo trabajaremos en 'allPosts'.
     ========================================= */
 
     // obtener posts guardados
-    const savedPosts = JSON.parse(localStorage.getItem('myPosts') || '[]'); //se modifico el parametro de 'post' a 'mypost'
+    const savedPosts = JSON.parse(localStorage.getItem('allPosts') || '[]'); //se modifico el parametro de 'post' a 'mypost'
 
     // si estamos editando
     if(this.mode === 'edit'){
@@ -149,13 +159,13 @@ export class CreatePostComponent implements OnChanges {
         post.id === newPost.id ? newPost : post
       );
 
-      localStorage.setItem('myPosts', JSON.stringify(updatedPosts) ); //lo actualiza 
+      localStorage.setItem('allPosts', JSON.stringify(updatedPosts) ); //lo actualiza 
 
     }else{
 
       // agregar nuevo post
       savedPosts.unshift(newPost);
-      localStorage.setItem('myPosts', JSON.stringify(savedPosts));
+      localStorage.setItem('allPosts', JSON.stringify(savedPosts));
 
     }
 

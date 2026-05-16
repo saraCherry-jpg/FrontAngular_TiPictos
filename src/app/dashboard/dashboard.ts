@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class Dashboard implements OnInit {
+  postToDelete: any;
 
   //constructor
   constructor(private router: Router){}
@@ -23,9 +24,19 @@ export class Dashboard implements OnInit {
   showCreatePost = false;
   posts: any[] = []; // POSTS
 
+  //inrtereaciones post 
+  selectedPost: any = null;
+  newComment = '';
+  username = '';
+  avatar = '';
+
+  editingPost: any = null;
+
+
  //Para el boton de configuración
   showSettingsModal = false;  //Setting / configuración
   isDarkMode: boolean = false;  // DARK MODE
+
 
 
   //_______________________________   METODOS   _____________________________________________________
@@ -35,6 +46,9 @@ export class Dashboard implements OnInit {
   ngOnInit(): void {
     this.loadPosts();
     this.loadTheme();
+
+    this.username = localStorage.getItem('username') || '';
+    this.avatar = localStorage.getItem('avatar') || '';
 
   }
 
@@ -57,13 +71,17 @@ export class Dashboard implements OnInit {
     }
   }
 
-  //carga los poast
+  //carga los post
   loadPosts() {
     const savedPosts =
-      JSON.parse(localStorage.getItem('myPosts') || '[]');
+      JSON.parse(localStorage.getItem('allPosts') || '[]');
 
-    this.posts = savedPosts;
-
+    this.posts = savedPosts.sort(
+      (a: any, b: any) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+    );
+    
   }
 
   // CREATE POST
@@ -73,15 +91,146 @@ export class Dashboard implements OnInit {
 
   closeCreatePost(){
     this.showCreatePost = false;
+    this.editingPost = null;
   }
 
 
   //Recibe los post
   handleNewPost(post: any){
 
-    this.loadPosts(); //regarga 'myPost'
+    this.loadPosts(); //regarga 'allPost'
     this.closeCreatePost(); // CERRAR MODAL
   }
+
+
+
+  //Previstas del post
+  openPostDetail(post: any) {
+    this.selectedPost = post;
+  }
+
+  closePostDetail() {
+    this.selectedPost = null;
+  }
+
+  //___________________________________________   INTERACCIONES POSTS   ______________________________________________
+  
+  //Like/ Corazones
+  toggleLike(post: any) {
+    post.likes = post.likes || 0;
+
+    if (!post.liked) {
+      post.likes++;
+      post.liked = true;
+
+    } else {
+      post.likes--;
+      post.liked = false;
+
+    }
+    this.savePosts(post); //nomas agregamos el post
+    
+  }
+
+
+
+  //Respot 
+  repost(post: any) {
+    if (!post.repostedBy) {
+      post.repostedBy = [];
+    }
+
+    if (!post.repostedBy.includes(this.username)) {
+      post.repostedBy.push(this.username);
+      post.reposts = (post.reposts || 0) + 1;
+
+    } else {
+      post.repostedBy =
+      post.repostedBy.filter(
+        (u: string) => u !== this.username
+      );
+
+      post.reposts--;
+    }
+
+    this.savePosts(post); //se agrega el post
+  }
+
+  
+
+  //Comentarios
+  addComment(post: any) {
+    if (!this.newComment.trim()) return;
+
+      if (!post.comments) {
+        post.comments = [];
+      }
+
+      post.comments.push({
+      user: this.username,
+      avatar: this.avatar,
+      text: this.newComment,
+      createdAt: new Date()
+
+    });
+
+    this.newComment = '';
+    this.savePosts(post); //se agrega el post 
+    
+  }
+
+
+  //Guarda la publicación 
+  savePosts(updatedPost?: any) {
+    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+
+    // Si recibimos un post actualizado
+    if(updatedPost){
+
+      const updatedPosts = allPosts.map((p:any) =>
+        p.id === updatedPost.id ? updatedPost : p
+      );
+
+      localStorage.setItem('allPosts',JSON.stringify(updatedPosts));
+      this.posts = updatedPosts;
+    } else {
+
+      localStorage.setItem('allPosts', JSON.stringify(this.posts));
+    }
+  }
+
+
+  //________________________________________    CRUD DEL POST   ________________________________________
+
+  //Editar 
+  editPost(post: any){
+    this.selectedPost = null;   //  CIERRA el modal actual
+    this.editingPost = post;   // guardamos el post a editar
+    this.showCreatePost = true; // abrimos el modal reutilizado
+  }
+
+  //Eliminar
+  deletePost(post: any){
+    this.postToDelete = post;
+  }
+
+  //CONFIRMA ELIMINACIÓN DEL POST
+  confirmDelete() {
+    if (!this.postToDelete) return;
+
+    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+    const updatedPosts = allPosts.filter((p: any) => p.id !== this.postToDelete.id);
+
+    localStorage.setItem('allPosts', JSON.stringify(updatedPosts));
+
+    this.loadPosts();
+    this.postToDelete = null;
+    this.selectedPost = null; 
+
+  }
+
+
+
 
 
 
@@ -182,7 +331,7 @@ export class Dashboard implements OnInit {
     localStorage.removeItem('currentUser'); //Cerrar Sesion actualmente
 
     // opcional:
-    // localStorage.clear();
+    // localStorage.clear(); //Eso provoca un receteo del sistema xddd
 
     // redirección login
     this.router.navigate(['/login']);
