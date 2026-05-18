@@ -21,7 +21,7 @@ export class Dashboard implements OnInit {
 
   //VARIABLES DECLARADAS:
   //Para post
-  showCreatePost = false;
+  activeModal: 'create' | 'preview' | 'edit' | null = null; // Seria el reemplazo de showCreatePost = false;
   posts: any[] = []; // POSTS
 
   //inrtereaciones post 
@@ -47,8 +47,10 @@ export class Dashboard implements OnInit {
     this.loadPosts();
     this.loadTheme();
 
-    this.username = localStorage.getItem('username') || '';
-    this.avatar = localStorage.getItem('avatar') || '';
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    this.username = currentUser.username || '';
+    this.avatar = currentUser.avatar || '';
 
   }
 
@@ -86,12 +88,14 @@ export class Dashboard implements OnInit {
 
   // CREATE POST
   openCreatePost(){
-    this.showCreatePost = true;
+    this.editingPost = null;
+    this.activeModal = 'create';
   }
 
   closeCreatePost(){
-    this.showCreatePost = false;
+    this.activeModal = null;
     this.editingPost = null;
+
   }
 
 
@@ -107,10 +111,12 @@ export class Dashboard implements OnInit {
   //Previstas del post
   openPostDetail(post: any) {
     this.selectedPost = post;
+    this.activeModal = 'preview';
   }
 
   closePostDetail() {
     this.selectedPost = null;
+    this.activeModal = null;
   }
 
   //___________________________________________   INTERACCIONES POSTS   ______________________________________________
@@ -192,7 +198,7 @@ export class Dashboard implements OnInit {
       );
 
       localStorage.setItem('allPosts',JSON.stringify(updatedPosts));
-      this.posts = updatedPosts;
+      this.posts = [...updatedPosts]; // reemplazo de this.posts = updatedPosts;
     } else {
 
       localStorage.setItem('allPosts', JSON.stringify(this.posts));
@@ -204,15 +210,31 @@ export class Dashboard implements OnInit {
 
   //Editar 
   editPost(post: any){
-    this.selectedPost = null;   //  CIERRA el modal actual
-    this.editingPost = post;   // guardamos el post a editar
-    this.showCreatePost = true; // abrimos el modal reutilizado
+     this.selectedPost = null;
+    this.editingPost = { ...post };
+    this.activeModal = 'edit';
   }
 
   //Eliminar
   deletePost(post: any){
-    this.postToDelete = post;
+    const confirmDelete = confirm('¿Eliminar publicación?');
+
+    if(!confirmDelete) return;
+    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+
+    const updatedPosts = allPosts.filter(
+      (p:any) => p.id !== post.id
+    );
+
+    localStorage.setItem('allPosts',JSON.stringify(updatedPosts));
+
+    this.loadPosts();
+
+    this.selectedPost = null;
+    this.activeModal = null;
   }
+
+
 
   //CONFIRMA ELIMINACIÓN DEL POST
   confirmDelete() {

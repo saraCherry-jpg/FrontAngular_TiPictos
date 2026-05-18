@@ -165,7 +165,7 @@
   <!--______________________________________________    TOCANDO TERRENO MODAL _______________________________ -->
   <!-- CREATE POST MODAL -->
   <app-create-post
-    *ngIf="showCreatePost"
+    *ngIf="activeModal === 'create' || activeModal === 'edit'"
 
     [mode]="editingPost ? 'edit' : 'create'"
     [postData]="editingPost"
@@ -225,11 +225,10 @@
   <!-- POST DETAIL / POST REVIEW -->
   <div
     class="post-modal"
-    *ngIf="selectedPost" 
+    *ngIf="activeModal === 'preview' && selectedPost"
     (click)="closePostDetail()">
     
-
-    <div class="post-viewe-card"
+    <div class="post-view-card"
       (click)="$event.stopPropagation()">
 
       <!-- CLOSE -->
@@ -372,20 +371,21 @@
         *ngIf="selectedPost.user === username"> <!-- condición del autor del POST -->
 
         <!-- EDIT -->
-        <button (click)="editPost(selectedPost)">
+        <button 
+          class="edit-btn"
+          (click)="editPost(selectedPost)">
           <i class="bi bi-pencil"></i>
         </button>
 
         <!-- DELETE -->
-        <button (click)="deletePost(selectedPost)">
+        <button 
+          class="delete-btn"
+          (click)="deletePost(selectedPost)">
           <i class="bi bi-trash"></i>
         </button>
 
       </div>
     </div>
-  </div>
-
-
   
 
 
