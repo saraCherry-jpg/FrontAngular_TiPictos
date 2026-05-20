@@ -157,10 +157,11 @@
       <button (click)="followUser(user)">
         Seguir
       </button>
-
     </div>
 
   </aside>
+
+
 
   <!--______________________________________________    TOCANDO TERRENO MODAL _______________________________ -->
   <!-- CREATE POST MODAL -->
@@ -174,6 +175,7 @@
     (postCreated)="handleNewPost($event)">
 
   </app-create-post>
+
 
   <!-- SETTINGS MODAL -->
   <div
@@ -221,6 +223,10 @@
       </div>
     </div>
   </div>
+
+
+
+
 
   <!-- POST DETAIL / POST REVIEW -->
   <div
@@ -386,6 +392,27 @@
 
       </div>
     </div>
+  
+
+
+    
+    <!-- ============================= -->
+    <!-- CONFIRM DELETE -->
+    <!-- ============================= -->
+  <div class="dashboard-confirm-modal" *ngIf="postToDelete">
+    <div class="dashboard-confirm-card">
+
+      <h3>¿Eliminar publicación?</h3>
+      <p>Esta acción no se puede deshacer</p>
+
+      <div class="dashboard-confirm-actions">
+        <button class="dashboard-cancel" (click)="postToDelete=null">Cancelar</button>
+        <button class="dashboard-delete" (click)="confirmDelete()">Eliminar</button>
+      </div>
+
+    </div>
+  </div>
+
   
 
 

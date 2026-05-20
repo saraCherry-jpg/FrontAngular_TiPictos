@@ -217,21 +217,7 @@ export class Dashboard implements OnInit {
 
   //Eliminar
   deletePost(post: any){
-    const confirmDelete = confirm('¿Eliminar publicación?');
-
-    if(!confirmDelete) return;
-    const allPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
-
-    const updatedPosts = allPosts.filter(
-      (p:any) => p.id !== post.id
-    );
-
-    localStorage.setItem('allPosts',JSON.stringify(updatedPosts));
-
-    this.loadPosts();
-
-    this.selectedPost = null;
-    this.activeModal = null;
+    this.postToDelete = post;
   }
 
 
@@ -247,7 +233,9 @@ export class Dashboard implements OnInit {
 
     this.loadPosts();
     this.postToDelete = null;
-    this.selectedPost = null; 
+    this.selectedPost = null;
+    this.activeModal = null;
+ 
 
   }
 

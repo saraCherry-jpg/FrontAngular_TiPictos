@@ -380,18 +380,24 @@ display:flex;
 /* BOTÓN FLOTANTE (+) */
 .fab-create-post {
   position: fixed; /*es la idea o clave*/
-  bottom: 25px;
-  right: 25px;
-   z-index: 1000;
+  bottom: 30px;
+  right: 30px;
 
-  width: 60px;
-  height: 60px;
+  z-index: 999;
+
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
 
   /*Para mover el alto y ancho del boton de publicar*/
   top: auto;
 
-  background: var(--color-primary);
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-accent)
+    );
   color: white;
   border: none;
 
@@ -402,13 +408,14 @@ display:flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+  transition: 0.25s ease;
 }
 
 .fab-create-post:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+   transform:
+    scale(1.08)
+    rotate(90deg);
 }
 
 
