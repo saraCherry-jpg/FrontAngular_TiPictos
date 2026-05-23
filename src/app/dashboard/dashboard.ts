@@ -37,6 +37,11 @@ export class Dashboard implements OnInit {
   showSettingsModal = false;  //Setting / configuración
   isDarkMode: boolean = false;  // DARK MODE
 
+  // USERS
+  currentUser: any = null;
+  suggestedUsers: any[] = [];
+  followingUsers: any[] = [];
+
 
 
   //_______________________________   METODOS   _____________________________________________________
@@ -44,15 +49,22 @@ export class Dashboard implements OnInit {
 
   //inicializa el dashboard
   ngOnInit(): void {
-    this.loadPosts();
-    this.loadTheme();
+    this.loadFollowingUsers(); //cargar los seguidores
+    this.loadPosts(); //carga los post
+    this.loadTheme(); //carga el tema de la interfaz
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     this.username = currentUser.username || '';
     this.avatar = currentUser.avatar || '';
 
+    this.loadSuggestedUsers();
+    this.loadFollowing();
+
   }
+
+
+
 
   // CARGA EL TEMA OSCURO
   loadTheme() {
@@ -210,7 +222,7 @@ export class Dashboard implements OnInit {
 
   //Editar 
   editPost(post: any){
-     this.selectedPost = null;
+    this.selectedPost = null;
     this.editingPost = { ...post };
     this.activeModal = 'edit';
   }
@@ -220,8 +232,7 @@ export class Dashboard implements OnInit {
     this.postToDelete = post;
   }
 
-
-
+  
   //CONFIRMA ELIMINACIÓN DEL POST
   confirmDelete() {
     if (!this.postToDelete) return;
@@ -242,16 +253,47 @@ export class Dashboard implements OnInit {
 
 
 
-
-
-
-
-
   /*PD: LA IDEA ES QUE LA SUGERENCIA DE USUARIOS, APAREZCA USUARIOS EXISTENTES QUE YA SE ALLAN REGISTRADO
   CON ANTERIORIDAD Y PUES ESO SIGNIFICA QUE ESTAN DADOS DE ALTA LOS USUARIOS PARA PODERLOS SEGUIR.. */
-  
-  
+
+  //SUGERENCIA DE SEGUIRODRE A SEGUIR 
+  loadSuggestedUsers() {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    this.suggestedUsers =
+      users.filter(
+        (user: any) =>
+          user.username !== this.username
+      );
+  }
+
+  //LOS QUE SIGUES 
+  loadFollowing() { 
+    JSON.parse(localStorage.getItem('following') || '[]'); 
+  }
+
+  loadFollowingUsers() {
+    const following =
+    JSON.parse(localStorage.getItem('following') || '[]');
+
+    this.suggestedUsers = this.suggestedUsers.map(user => {
+
+    const isFollowing = following.some(
+      (f:any) => f.username === user.username
+      );
+
+      return {
+        ...user,
+        isFollowing
+      };
+    });
+  }
+
+
+
+  //DESCARTADO!!!.. 
   //nomas son de prueba xddd  --> mas delante se cambiará el codigo
+  /* 
   suggestedUsers = [
     {
       name: 'Sari',
@@ -269,30 +311,50 @@ export class Dashboard implements OnInit {
     }
   ];
 
+  */
 
-//SEGUIR USUARIOS
+  //SEGUIR USUARIOS
   followUser(user:any){
-    console.log('Siguiendo a:', user);
+    //console.log('Siguiendo a:', user);
 
     // localStorage actual
     const savedFollowing = JSON.parse(localStorage.getItem('following') || '[]');
 
     // evitar duplicados
-    const alreadyFollowing =
-      savedFollowing.some(
-        (u:any) => u.username === user.username
+    const exists = savedFollowing.some(
+        (u:any) => u.username === user.username);
+
+
+    //CONDICCIÓN: PARA DEJAR SEGUIR
+    if(exists){
+      const updatedFollowing = savedFollowing.filter(
+        (u:any) => u.username !== user.username
       );
 
-    if(!alreadyFollowing){
+      localStorage.setItem('following',JSON.stringify(updatedFollowing)); //lo almacena
+      user.isFollowing = false;
 
+    } else {
+
+      // SEGUIR ---> y lo amlacen todo
+      user.isFollowing = true;
       savedFollowing.push(user);
 
-      localStorage.setItem(
-        'following',
-        JSON.stringify(savedFollowing)
-      );
+      localStorage.setItem('following',JSON.stringify(savedFollowing));
     }
   }
+
+
+  // VERIFY FOLLOW
+  // ==========================================
+  isFollowing(user: any): boolean {
+
+    return this.followingUsers.some(
+      (u: any) => u.username === user.username
+    );
+  }
+
+
   
 
 

@@ -929,23 +929,24 @@ display:flex;
 /*  ___________________________ COMENTARIOS _____________________________________*/
 /* CONTENEDOR */
 .comments-section {
-  margin-top: 15px;
-  border-top: 1px solid #ddd;
-  padding-top: 10px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+
 }
 
 /* LISTA */
 .comments-list {
-  max-height: 200px; /* Altura fija para comentarios */
+  max-height: 320px; /* Altura fija para comentarios */
 
   /*Herramientas scroll*/
   overflow-y: auto; /*Es la barrita SCROLL en vertical, para horizontal seria lo mismo pero en X*/
   overflow-x: hidden; /* IMPORTANTE */
-  padding-right: 5px; /* evita que el scroll tape texto */
+  padding-right: 6px; /* evita que el scroll tape texto */
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 
@@ -955,32 +956,34 @@ display:flex;
 }
 
 .comments-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
 }
 
 .comments-list::-webkit-scrollbar-thumb {
-  background: #5fd0d6;
+  background: var(--color-primary);
   border-radius: 10px;
 }
 
+/*
 .comments-list::-webkit-scrollbar-thumb:hover {
   background: #4ca2cd;
 }
+*/
 
 
 /* CADA COMENTARIO */
 .comment {
   display: flex;
-  gap: 10px;
+  gap: 14px;
   align-items: flex-start;
 }
 
 /* AVATAR */
 .comment-avatar {
-  width: 35px;
-  height: 35px;
-  min-width: 35px; /* evita que se encoja */
+  width: 46px;
+  height: 46px;
+  min-width: 46px; /* evita que se encoja */
 
   border-radius: 50%;
   overflow: hidden;
@@ -989,7 +992,8 @@ display:flex;
   align-items: center;
   justify-content: center;
 
-  background: #ccc;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 /* IMAGEN */
@@ -1001,12 +1005,30 @@ display:flex;
 
 /* ICONO */
 .comment-avatar i {
-  font-size: 22px;
-  color: white;
+  font-size: 28px;
+  color: var(--color-primary);
 }
 
 /* CONTENIDO */
-.comment-content {
+.comment-content { /*Este es clave para cambiar el globo de los comentarios*/
+  /*NUEVA REFERENCIA*/
+  flex: 1;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.08),
+      rgba(255,255,255,0.04)
+    );
+
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+
+  transition: 0.22s ease;
+
+  /* ANTIGUA REFERENCIA
   background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
   padding: 10px 14px;
   border-radius: 15px;
@@ -1017,6 +1039,8 @@ display:flex;
   color: #eee;
 
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  */
+
 }
 
 /*HEADER*/
@@ -1030,34 +1054,32 @@ display:flex;
 
 /* HOVER BONITO */
 .comment-content:hover {
-  max-width: 100%;
-  overflow: hidden;
+  transform: translateY(-2px);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.11),
+      rgba(255,255,255,0.05)
+    );
 
-  word-break: break-word;
-  overflow-wrap: break-word;
-
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 /* USUARIO */
 .comment-user {
-  font-size: 12px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
 
+  padding: 5px 10px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+
+  background: rgba(95,208,214,0.12);
   color: var(--color-primary);
 
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 
-  padding: 2px 6px;
-  border-radius: 8px;
-
-  background: rgba(255,255,255,0.08);
-
-  transition: 0.2s ease;
 }
 
 /* TEXTO */
@@ -1072,6 +1094,8 @@ display:flex;
   word-break: break-word;      /*  rompe palabras largas */
   overflow-wrap: break-word;   /*  soporte moderno */
   white-space: normal; /* por si acaso */
+
+  
 
 }
 
@@ -1101,19 +1125,26 @@ display:flex;
 
 /* BOTÓN ENVIAR */
 .comment-input-box button {
-  background: #00bcd4;
+  width: 50px;
+  height: 50px;
   border: none;
-  padding: 10px 14px;
   border-radius: 50%;
-  color: white;
   cursor: pointer;
-  transition: 0.2s;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-accent)
+    );
+
+  color: white;
+  transition: 0.25s ease;
 }
 
 /* HOVER BOTÓN */
 .comment-input-box button:hover {
-  background: #0097a7;
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 

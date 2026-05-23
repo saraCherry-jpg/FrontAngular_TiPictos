@@ -154,8 +154,10 @@
 
       </div>
 
-      <button (click)="followUser(user)">
-        Seguir
+      <button 
+        [class.following]="isFollowing(user)"
+        (click)="followUser(user)">
+            {{ user.isFollowing ? 'Siguiendo' : 'Seguir' }}
       </button>
     </div>
 

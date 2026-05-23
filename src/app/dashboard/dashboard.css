@@ -41,7 +41,7 @@
   width: 110px;
   height: 110px;
 
-  gap: -4px;
+  gap: 25px; /*estaba a -4*/
   margin-bottom: -8px; /*Ajustes el la distancia del texto*/
   padding-left: 2px; /*Se meuve hacia un lado*/
   position: relative;
@@ -249,11 +249,16 @@
 }
 
 /* MAIN */
-
 .dashboard-main {
+  /*___________________________________   AJUSTAR MAIN (CUERPO PRINCIPAL)   ___________________*/
   flex: 1;
   padding: 25px;
   min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 
@@ -265,22 +270,27 @@
 /* ===================================== */
 
 .feed-posts-grid{
-  column-count: 3;
-  column-gap: 15px;
-
-  padding: 20px;
+  column-count: 2;
+  column-gap: 18px;
 
   width: 100%;
-  max-width: 1400px;
-  margin: auto;
+  /*display: grid; es el del detalle*/
+  
+
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 
 .feed-post-card{  /* CARD */
+  width: 100%;
   break-inside: avoid;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+
   border-radius: 22px;
   overflow: hidden;
+  
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.06);
@@ -643,7 +653,6 @@ ________________________________________*/
 }
 
 .close-btn:hover{
-
   background: var(--color-secondary);
 
   transform:
@@ -715,7 +724,6 @@ ________________________________________*/
 
 .comments-section{
   margin-top: 18px;
-
   padding-top: 18px;
 
   border-top:
@@ -808,17 +816,11 @@ ________________________________________*/
       rgba(255,255,255,0.04)
     );
 
-  border:
-    1px solid rgba(255,255,255,0.06);
-
+  border: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(14px);
-
   border-radius: 22px;
-
   padding: 14px 16px;
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 
   transition: 0.22s ease;
 }
@@ -1086,17 +1088,28 @@ ________________________________________*/
 }
 
 @media(max-width:800px){
-
-  .dashboard-sidebar{
+  .dashboard-sidebar{ /*Centra el logoipo cuando se hace pequeña la pantalla */
     width:90px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
   }
 
-  .dashboard-link span,
-  .dashboard-logo h2{
+    .dashboard-logo-container{
+    justify-content: center;
+  }
+
+  .dashboard-link span, /*Funcionalidad del texto renponsive oculta el texto*/
+  .dashboard-logo-text{
     display:none;
   }
 
 }
+
+
+
 
 
 
@@ -1174,7 +1187,7 @@ ________________________________________*/
 
 .settings-header h3{
   margin: 0;
-  color: var(--color-text);
+  color: var(--color-text-dark); /*se lo agregamos, se lo pusimos asi para que tenga mejor armonia a la hora de visualizar*/
 
 }
 
@@ -1206,7 +1219,7 @@ ________________________________________*/
   gap: 14px;
 
   font-size: 15px;
-  color: var(--color-text);
+  color: var(--color-text-dark); /*se lo agregamos, se lo pusimos asi para que tenga mejor armonia a la hora de visualizar*/
 
   background:rgba(255,255,255,0.08);
   transition: 0.25s ease;
@@ -1294,7 +1307,8 @@ ________________________________________*/
 
   cursor: pointer;
 
-  color: var(--color-text);
+  /*color: var(--color-text);*/
+  color: var(--color-text-dark); /*se lo agregamos*/
   background: rgba(255,255,255,0.08);
   transition: 0.25s ease;
 
@@ -1428,3 +1442,27 @@ ________________________________________*/
     opacity: 1;
   }
 }
+
+
+
+/*______________________________    AJUSTES VISUALES    _________________________________*/
+/* ===================================== */
+/* RESPONSIVE FEED */
+/* ===================================== */
+
+@media (max-width: 1200px){
+
+  .feed-posts-grid{
+    column-count: 2;
+  }
+
+}
+
+@media (max-width: 700px){
+
+  .feed-posts-grid{
+    column-count: 1;
+  }
+
+}
+

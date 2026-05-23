@@ -32,7 +32,9 @@ export class ProfileComponent implements OnInit {
 
   followers: any[] = [];
   following: any[] = [];
-  user: any;
+  //user: any;
+
+  
    
 
   constructor(private router: Router){}
@@ -151,6 +153,17 @@ export class ProfileComponent implements OnInit {
   //Carga Followers y Follow
   loadFollowers(){
 
+    //SEGUIDORES
+    this.followers =
+    JSON.parse(localStorage.getItem('followers') || '[]'); 
+
+    //SIGUES 
+    this.following =
+    JSON.parse(localStorage.getItem('following') || '[]');
+
+
+    /*
+
     //Carga y almacena datos
     const savedFollowers =
       JSON.parse(localStorage.getItem('followers') || '[]');
@@ -162,6 +175,7 @@ export class ProfileComponent implements OnInit {
     this.followers = savedFollowers;
     this.following = savedFollowing;
 
+    */
     
 
 
@@ -235,38 +249,28 @@ export class ProfileComponent implements OnInit {
   // SEGUIR USUARIO
   // =====================================
   followUser(user: any){
-    user.isFollowing = !user.isFollowing;
+    const exists = this.following.some(u => u.username === user.username);
 
-    // SI AHORA LO SIGUES
-    if(user.isFollowing){
+    // SI YA LO SIGUES → DEJAR DE SEGUIR
+    if(exists){
 
-      const exists = this.following.find(
-        u => u.username === user.username
-      );
-
-      if(!exists){
-        this.following.push(user);
-      }
-
-    } else {
-
-      // SI DEJAS DE SEGUIR
-      this.following = this.following.filter(
-        u => u.username !== user.username
-      );
-    }
-
-    // GUARDAR FOLLOWING
-    localStorage.setItem(
-      'following',
-      JSON.stringify(this.following)
+    this.following = this.following.filter(
+      u => u.username !== user.username
     );
 
-    // GUARDAR FOLLOWERS ACTUALIZADO
-    localStorage.setItem(
-      'followers',
-      JSON.stringify(this.followers)
-    );
+    user.isFollowing = false;
+
+  } else {
+
+    // SEGUIR
+    user.isFollowing = true;
+    this.following.push(user);
+
+  }
+
+    // GUARDAR
+    localStorage.setItem('following', JSON.stringify(this.following));
+
   }
 
 
