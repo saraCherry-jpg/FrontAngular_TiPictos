@@ -125,7 +125,11 @@ export class LoginComponent {
       this.isLoading = false;
 
       // Redirige al perfil
-      this.router.navigate(['/profileUsers']);
+      //this.router.navigate(['/profileUsers']);
+
+      //Redirige al Dashboard
+      this.router.navigate(['/dashboard']);
+
 
     }, 2000);
 
