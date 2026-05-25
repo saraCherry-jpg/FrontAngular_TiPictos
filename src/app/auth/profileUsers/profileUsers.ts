@@ -65,7 +65,6 @@ export class ProfileComponent implements OnInit {
     this.loadPosts(); //allPosts
 
 
-     
 
     window.addEventListener('focus', () => { //Recarga todo el profile cuando terminas de editars
       this.loadUser();
@@ -85,11 +84,6 @@ export class ProfileComponent implements OnInit {
       this.isDarkMode = false;
     }
 
-    //PARA QUE GUARDE LA PUBLICACIÓN CORRECTAMENTE
-    /*
-    const savedPosts = JSON.parse(localStorage.getItem('myPosts') || '[]');
-    this.posts = savedPosts;
-    */
 
 
     //arregla los comentarios viejos
@@ -130,10 +124,10 @@ export class ProfileComponent implements OnInit {
       post.user === currentUser.username
       
     ).sort(
-        (a: any, b: any) =>
-        new Date(b.createdAt).getTime()-
-        new Date(a.createdAt).getTime()
-      );
+      (a: any, b: any) =>
+      new Date(b.createdAt).getTime()-
+      new Date(a.createdAt).getTime()
+    );
 
 
 
@@ -200,9 +194,6 @@ export class ProfileComponent implements OnInit {
 
 
 
-  //cargar el post
-
-
   //Carga Followers y Follow
   loadFollowers(){
 
@@ -225,32 +216,8 @@ export class ProfileComponent implements OnInit {
         localStorage.getItem(
           `followers_${currentUser.username}`
         ) || '[]'
-      );
+      ); 
 
-
-
-    /*
-
-    //Carga y almacena datos
-    const savedFollowers =
-      JSON.parse(localStorage.getItem('followers') || '[]');
-
-    const savedFollowing =
-      JSON.parse(localStorage.getItem('following') || '[]');
-
-    //Asigna
-    this.followers = savedFollowers;
-    this.following = savedFollowing;
-
-    */
-    
-
-    //Son PRUEBAS TEMPORAL (Se supone que ya tenemos el login y register y pues podemos acceder)
-    
-    /*  PD: Mas delante hare las funcionalidaddes de true o false con el isFollowig:
-     sin imporar el usuario que aparezca, ya que debe estar estar almacenados los usuarios
-     en el sistema con el simple fin de que se encuentre registrando
-     y por ende el boton lo pueda hacer funcional correctamente "seguir" "eliminar"  */
     
   }
 

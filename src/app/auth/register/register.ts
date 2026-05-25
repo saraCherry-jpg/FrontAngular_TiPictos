@@ -29,8 +29,8 @@ export class RegisterComponent {
   isLoading: boolean = false;
   isDarkMode: boolean = false;
   showPassword: boolean = false;
-goToRegister: any;
-exit: any;
+  goToRegister: any;
+  exit: any;
 
   constructor(private router: Router) {}
 
@@ -39,7 +39,6 @@ exit: any;
   // ================================
 
   ngOnInit(){
-
     const theme = localStorage.getItem('theme');
 
     if(theme === 'dark'){
@@ -57,7 +56,6 @@ exit: any;
   // ================================
 
   toggleTheme(): void {
-
     this.isDarkMode = !this.isDarkMode;
 
     if(this.isDarkMode){
@@ -81,7 +79,6 @@ exit: any;
   // ================================
 
   togglePassword(): void {
-
     this.showPassword = !this.showPassword;
 
   }
@@ -125,8 +122,6 @@ exit: any;
     const newUser = {
 
       id: Date.now(), // ID ÚNICO  -->pto id pipipi
-
-
       name: this.name,
       username: this.username,
       email: this.email,
@@ -142,17 +137,13 @@ exit: any;
 
     // GUARDAR USUARIO
     users.push(newUser);
-
     localStorage.setItem('users', JSON.stringify(users));
 
     this.isLoading = true;
-
     setTimeout(() => {
 
       alert('Registro exitoso');
-
       this.isLoading = false;
-
       this.router.navigate(['/login']);
 
     },1500);
@@ -164,7 +155,6 @@ exit: any;
   // ================================
 
   goToLogin(): void {
-
     this.router.navigate(['/login']);
 
   }

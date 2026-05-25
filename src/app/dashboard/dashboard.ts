@@ -52,15 +52,7 @@ export class Dashboard implements OnInit {
   ngOnInit(): void {
 
     this.loadCurrentUser();
-
-    this.users =
-    JSON.parse(localStorage.getItem('users') || '[]');
-    /*
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
-    this.username = currentUser.username || '';
-    this.avatar = currentUser.avatar || '';
-    */
+    this.users = JSON.parse(localStorage.getItem('users') || '[]');
 
     this.loadSuggestedUsers();
     this.loadFollowing();
@@ -332,7 +324,6 @@ export class Dashboard implements OnInit {
 
 
 
-
   /*PD: LA IDEA ES QUE LA SUGERENCIA DE USUARIOS, APAREZCA USUARIOS EXISTENTES QUE YA SE ALLAN REGISTRADO
   CON ANTERIORIDAD Y PUES ESO SIGNIFICA QUE ESTAN DADOS DE ALTA LOS USUARIOS PARA PODERLOS SEGUIR.. */
 
@@ -385,27 +376,7 @@ export class Dashboard implements OnInit {
 
 
 
-  //DESCARTADO!!!.. 
-  //nomas son de prueba xddd  --> mas delante se cambiará el codigo
-  /* 
-  suggestedUsers = [
-    {
-      name: 'Sari',
-      username: 'sari.glory'
-    },
-
-    {
-      name: 'Rock',
-      username: 'rock.light'
-    },
-
-    {
-      name: 'Tempo',
-      username: 'quakewoman'
-    }
-  ];
-
-  */
+  
 
   //SEGUIR USUARIOS
   followUser(user:any){

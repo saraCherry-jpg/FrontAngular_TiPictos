@@ -161,36 +161,7 @@ display:flex;
 }
 
 
-/* Botones Follow y Followers*/
-/*
-.profile-btn-secondary-Follow,
-.profile-btn-secondary-Followers {
-  background-color: var(--color-primary);
-  border: none;
-  padding: 10px 18px;
-  color: white;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-*/
 
-/* HOVER bonito */
-/*
-.profile-btn-secondary-Follow:hover,
-.profile-btn-secondary-Followers:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-}
-*/
-
-/* OPCIONAL: estado activo */
-/*
-.profile-btn-secondary-Follow.active,
-.profile-btn-secondary-Followers.active {
-  background-color: var(--color-secondary);
-}
-*/
 
 /* ============================= */
 /* FOLLOW / FOLLOWERS BUTTONS */
@@ -525,11 +496,6 @@ display:flex;
 
 
 
-
-
-
-
-
 /*EXTRAS DE MODAL MANDE*/
 .overlay { /* Overlay que cubre toda la pantalla y centra el contenido */
   z-index: 9999;
@@ -818,8 +784,7 @@ display:flex;
   /*se agrego el extra*/
   box-shadow: 0 20px 40px rgba(0,0,0,0.5),
 
-    /*inset 0 1px rgba(255,255,255,0.2);*/
-
+  /*inset 0 1px rgba(255,255,255,0.2);*/
   /*animation: scaleIn 0.25s ease;*/
 }
 
@@ -1298,38 +1263,6 @@ display:flex;
 }
 
 
-/*modo oscuro en comentario*/
-/*
-.dark-mode .comment-content {
-  background: #2a2a2a;
-  color: #eee;
-}
-
-
-.dark-mode .comment-content:hover {
-  background: #333;
-}
-
-
-.dark-mode .comment-input-box input {
-  background: #1e1e1e;
-  border: 1px solid #444;
-  color: white;
-}
-*/
-
-/*Es la prueba*/
-/*
-app-create-post {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: rgba(255,0,0,0.5) !important;
-  z-index: 9999 !important;
-}
-*/
 
 
 /*PARA EL FOLLOW Y FOLLOWING ESTILIZAR O TUNEAR VISTA */
