@@ -45,7 +45,12 @@
           <p>Subir imagen</p>
         </div>
 
-        <input type="file" hidden #fileInput (change)="onFileSelected($event)">
+        <input 
+          type="file" 
+          accept="image/png, image/jpeg, image/webp"
+          hidden 
+          #fileInput
+          (change)="onFileSelected($event)">
 
         <img *ngIf="preview" [src]="preview" class="preview">
 

@@ -42,7 +42,7 @@ export class CreatePostComponent implements OnChanges {
 
 
 
-  // NUEVA FUNCIÓN PARA COMPRIMIR IMAGEN
+  // NUEVA FUNCIÓN PARA COMPRIMIR IMAGEN: SON LOS FORMATOS QUE UNO PUEDE TRABAJAR (PNG, JPG, WEB)
   compressImage(file: File, maxWidth: number = 800, quality: number = 0.7): Promise<string> {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -67,14 +67,12 @@ export class CreatePostComponent implements OnChanges {
           canvas.height = height;
           ctx?.drawImage(img, 0, 0, width, height);
           
-          const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+          const compressedBase64 = canvas.toDataURL('image/jpeg', quality); //0.2 //Con eso Identificamos los tipos de img
           resolve(compressedBase64);
         };
       };
     });
   }
-
-
 
 
 
@@ -85,7 +83,7 @@ export class CreatePostComponent implements OnChanges {
 
     //excepciones para que marque error en caso de que la imagen no comprima correctamente... 
     try {
-      const compressedBase64 = await this.compressImage(file, 800, 0.6);
+      const compressedBase64 = await this.compressImage(file, 800, 0.6); //300, 0.2
       this.preview = compressedBase64;
       this.imageBase64 = compressedBase64;
     } catch (error) {
@@ -101,84 +99,84 @@ export class CreatePostComponent implements OnChanges {
 
   //____________________________________________________ CREATE o EDIT  ___________________________________________________
   publish(){
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); //
-    console.log(currentUser); //Verifica como guardo el usuario..
+    try {
+      const currentUser =JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    const newPost = {
-      id: this.postData ? this.postData.id : Date.now(), // mantiene ID si edita
+      const newPost = {
 
-      //Lo del perfil  ------------------> todo se cambia a currentUser
-      user: currentUser.username, // importante para profile 
-      avatar: currentUser.avatar || null, 
+        id: this.postData
+          ? this.postData.id
+          : Date.now(),
 
-      //PD: Agregar el "name" es opcional, pero se ve mejor sin el name / nombre:
+        user: currentUser.username,
+        // avatar: currentUser.avatar || null, //cuello xd
+        type: this.type,
+        description: this.description,
 
-      type: this.type,
-      description: this.description,
+        hashtags: this.hashtags
+          ? this.hashtags
+              .split(' ')
+              .filter(tag => tag.trim() !== '')
+          : [],
 
-      //lo del hastag
-      hashtags: this.hashtags
-      ? this.hashtags.split(' ').filter(tag => tag.trim() !== '')
-      : [],
+        image: this.imageBase64 || null, //imagen: permite nomas subir imagenes con menores a 5MB
 
-      image: this.imageBase64 || null, //imagen
+        likes: this.postData?.likes ?? 0,
+        liked: this.postData?.liked ?? false,
 
+        comments: this.postData?.comments ?? [],
 
-      // NUEVO agregados botones interactivos de las redes ()
-      //pd: (evita NaN desde origen)
-      likes: this.postData?.likes ?? 0, //corazones contados
-      liked: this.postData?.liked ?? false, //conrazones 
+        reposts: this.postData?.reposts ?? 0,
+        repostedBy: this.postData?.repostedBy ?? [],
 
-      comments: this.postData?.comments ?? [], 
+        createdAt:
+        this.postData?.createdAt || new Date()
+      };
 
-      reposts: this.postData?.reposts ?? 0,
-      repostedBy: this.postData?.repostedBy ?? [], // restringe
+      // POSTS GUARDADOS
+      const savedPosts = JSON.parse(localStorage.getItem('allPosts') || '[]');
+ 
+      //Validación oara editar la publicación
+      if(this.mode === 'edit'){
 
-      //fecha de publicacion
-      createdAt: this.postData?.createdAt || new Date()
-    };
+        const updatedPosts =
+          savedPosts.map((post:any) =>
 
+            post.id === newPost.id
+              ? newPost
+              : post
+          );
 
+        localStorage.setItem('allPosts', JSON.stringify(updatedPosts)); //actualiza
+      } else {
 
+        // NUEVO POST
+        savedPosts.unshift(newPost); //incluye: comentarios, likes, repost, avatar, la imagen Base64
+        localStorage.setItem('allPosts', JSON.stringify(savedPosts)); //lo aguarda y almacena...
+      }
 
-    /* =========================================
-    GUARDAR POSTS EN LOCALSTORAGE:
+      // EVENTOS
+      this.postCreated.emit(newPost);
+      this.close.emit();
 
-    //PD: Ya no usaremos el parametro 'myPosts', porque suena a muy personal o nuestro
-    //  a hacerlas mejor global y para todos e incluso identificando el tipo de usuario
-    // de como intereactua en una red social que es lo que nos interesa, y lo trabajaremos en 'allPosts'.
-    ========================================= */
+    } catch(error: any){
 
-    // obtener posts guardados
-    const savedPosts = JSON.parse(localStorage.getItem('allPosts') || '[]'); //se modifico el parametro de 'post' a 'mypost'
-
-    // si estamos editando
-    if(this.mode === 'edit'){
-
-      const updatedPosts = savedPosts.map((post:any) =>
-        post.id === newPost.id ? newPost : post
-      );
-
-      localStorage.setItem('allPosts', JSON.stringify(updatedPosts) ); //lo actualiza 
-
-    }else{
-
-      // agregar nuevo post
-      savedPosts.unshift(newPost);
-      localStorage.setItem('allPosts', JSON.stringify(savedPosts));
-
-    }
-
-    this.postCreated.emit(newPost);
-    this.close.emit();
-    
-  } catch (error: { name: string; }) {
       console.error('Error al publicar:', error);
-      if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-        alert('No hay suficiente espacio de almacenamiento. La imagen es demasiado pesada o hay muchos posts antiguos. Prueba a eliminar algunos posts o usar imágenes más pequeñas.');
+
+      if(
+        error instanceof DOMException &&
+        error.name === 'QuotaExceededError'
+      ){
+        alert('No hay suficiente espacio de almacenamiento.');
+
       } else {
         alert('Ocurrió un error al guardar la publicación.');
       }
+    }
+
+
+
   }
+    
 
 }
