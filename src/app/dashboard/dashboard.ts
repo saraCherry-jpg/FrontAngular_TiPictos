@@ -49,10 +49,6 @@ export class Dashboard implements OnInit {
 
   //inicializa el dashboard
   ngOnInit(): void {
-    this.loadFollowingUsers(); //cargar los seguidores
-    this.loadPosts(); //carga los post
-    this.loadTheme(); //carga el tema de la interfaz
-
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     this.username = currentUser.username || '';
@@ -60,6 +56,10 @@ export class Dashboard implements OnInit {
 
     this.loadSuggestedUsers();
     this.loadFollowing();
+
+    this.loadFollowingUsers(); //cargar los seguidores
+    this.loadPosts(); //carga los post
+    this.loadTheme(); //carga el tema de la interfaz
 
   }
 
@@ -87,13 +87,33 @@ export class Dashboard implements OnInit {
 
   //carga los post
   loadPosts() {
-    const savedPosts =
-      JSON.parse(localStorage.getItem('allPosts') || '[]');
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    this.posts = savedPosts.sort(
-      (a: any, b: any) =>
+    const allPosts =
+    JSON.parse(localStorage.getItem('allPosts') || '[]');
+
+    // USUARIOS QUE SIGO
+    const following =
+    JSON.parse(
+      localStorage.getItem(
+        `following_${currentUser.username}`
+      ) || '[]'
+    );
+
+    const followingUsernames =
+      following.map((u:any) => u.username);
+
+      // FILTRO del PEED
+      this.posts = allPosts.filter((post:any) =>
+      post.user === currentUser.username || //mis post
+      followingUsernames.includes(post.user) //post de usuarios que sigo
+
+    ).sort(
+      (a:any, b:any) =>
       new Date(b.createdAt).getTime() -
       new Date(a.createdAt).getTime()
+
     );
     
   }
@@ -259,22 +279,36 @@ export class Dashboard implements OnInit {
   //SUGERENCIA DE SEGUIRODRE A SEGUIR 
   loadSuggestedUsers() {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    this.suggestedUsers =
-      users.filter(
-        (user: any) =>
-          user.username !== this.username
-      );
+    this.suggestedUsers = users.filter(
+      (user:any) =>
+      user.username !== currentUser.username
+
+    );
   }
 
   //LOS QUE SIGUES 
   loadFollowing() { 
-    JSON.parse(localStorage.getItem('following') || '[]'); 
+    //JSON.parse(localStorage.getItem('following') || '[]'); 
+
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    this.followingUsers =
+      JSON.parse(
+        localStorage.getItem(
+          `following_${currentUser.username}`
+        ) || '[]'
+      );
   }
 
   loadFollowingUsers() {
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
+
     const following =
-    JSON.parse(localStorage.getItem('following') || '[]');
+    JSON.parse(localStorage.getItem( `following_${currentUser.username}`) || '[]');
 
     this.suggestedUsers = this.suggestedUsers.map(user => {
 
@@ -317,31 +351,54 @@ export class Dashboard implements OnInit {
   followUser(user:any){
     //console.log('Siguiendo a:', user);
 
-    // localStorage actual
-    const savedFollowing = JSON.parse(localStorage.getItem('following') || '[]');
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    // evitar duplicados
+    // EVITAR AUTO FOLLOW
+    if(user.username === currentUser.username){
+      return;
+    }
+
+    const storageKey =
+      `following_${currentUser.username}`;
+
+    const savedFollowing =
+      JSON.parse(localStorage.getItem(storageKey) || '[]');
+
     const exists = savedFollowing.some(
-        (u:any) => u.username === user.username);
+      (u:any) => u.username === user.username
+    );
 
-
-    //CONDICCIÓN: PARA DEJAR SEGUIR
+    // DEJAR DE SEGUIR
     if(exists){
-      const updatedFollowing = savedFollowing.filter(
-        (u:any) => u.username !== user.username
+
+      const updatedFollowing =
+        savedFollowing.filter(
+          (u:any) => u.username !== user.username
+        );
+
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify(updatedFollowing)
       );
 
-      localStorage.setItem('following',JSON.stringify(updatedFollowing)); //lo almacena
       user.isFollowing = false;
 
     } else {
 
-      // SEGUIR ---> y lo amlacen todo
+      // SEGUIR
       user.isFollowing = true;
+
       savedFollowing.push(user);
 
-      localStorage.setItem('following',JSON.stringify(savedFollowing));
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify(savedFollowing)
+      );
     }
+
+    this.loadFollowing();
+    this.loadPosts();
   }
 
 

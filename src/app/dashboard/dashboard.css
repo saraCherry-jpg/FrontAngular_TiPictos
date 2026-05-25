@@ -252,12 +252,13 @@
 .dashboard-main {
   /*___________________________________   AJUSTAR MAIN (CUERPO PRINCIPAL)   ___________________*/
   flex: 1;
-  padding: 25px;
+  padding: 25px 35px;
   min-height: 100vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
 
 }
 
@@ -902,22 +903,37 @@ ________________________________________*/
 /* SEARCH */
 .dashboard-search {
   width: 100%;
-  max-width: 750px;
+  max-width: 850px;
 
-  margin: auto;
+  /*margin: auto;*/
 
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 
-  padding: 14px 18px;
+  padding: 16px 22px;
+  border-radius: 22px;
 
-  border-radius: 25px;
-
-  background:rgba(255,255,255,0.08); /*COLOR DE LA BARRA DEL BUSCADOR"*/
+  background:rgba(255,255,255,0.06); /*COLOR DE LA BARRA DEL BUSCADOR"*/
 
   backdrop-filter: blur(20px);
-  margin-bottom: 50px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 35px;
+  
+  /*Nuevos ajustes*/
+  margin-bottom: 35px;
+
+  position: sticky;
+  top: 15px;
+
+  z-index: 20;
+  transition: 0.25s ease;
+}
+
+.dashboard-search:hover{
+  background: rgba(255,255,255,0.09);
+
+  transform: translateY(-2px);
 }
 
 .dashboard-search input {

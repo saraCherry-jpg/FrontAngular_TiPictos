@@ -153,13 +153,22 @@ export class ProfileComponent implements OnInit {
   //Carga Followers y Follow
   loadFollowers(){
 
-    //SEGUIDORES
-    this.followers =
-    JSON.parse(localStorage.getItem('followers') || '[]'); 
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    //SIGUES 
     this.following =
-    JSON.parse(localStorage.getItem('following') || '[]');
+      JSON.parse(
+        localStorage.getItem(
+          `following_${currentUser.username}`
+        ) || '[]'
+      );
+
+    this.followers =
+      JSON.parse(
+        localStorage.getItem(
+          `followers_${currentUser.username}`
+        ) || '[]'
+      );
 
 
     /*
@@ -178,7 +187,6 @@ export class ProfileComponent implements OnInit {
     */
     
 
-
     //Son PRUEBAS TEMPORAL (Se supone que ya tenemos el login y register y pues podemos acceder)
     
     /*  PD: Mas delante hare las funcionalidaddes de true o false con el isFollowig:
@@ -186,42 +194,6 @@ export class ProfileComponent implements OnInit {
      en el sistema con el simple fin de que se encuentre registrando
      y por ende el boton lo pueda hacer funcional correctamente "seguir" "eliminar"  */
     
-
-    /* 
-    // DEMO TEMPORAL
-    if(this.followers.length === 0){
-
-      this.followers = [
-
-        {
-          name: 'Ana',
-          username: 'ana_dev',
-          avatar: '',
-          isFollowing: false //no lo sigues 
-        },
-
-        {
-          name: 'Luis',
-          username: 'luis_art',
-          avatar: '',
-          isFollowing: true //si lo sigues 
-        },
-
-        {
-          name: 'Carlos',
-          username: 'carlos_js',
-          avatar: '',
-          isFollowing: false
-        }
-
-      ];
-
-      this.following = this.followers.filter(
-        u => u.isFollowing
-      );
-    }
-
-    */
   }
 
 
@@ -249,28 +221,43 @@ export class ProfileComponent implements OnInit {
   // SEGUIR USUARIO
   // =====================================
   followUser(user: any){
-    const exists = this.following.some(u => u.username === user.username);
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    // SI YA LO SIGUES → DEJAR DE SEGUIR
+    // EVITAR AUTO FOLLOW
+    if(user.username === currentUser.username){
+      return;
+    }
+
+    const storageKey =`following_${currentUser.username}`;
+    const savedFollowing =  JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+    const exists =
+      savedFollowing.some(
+        (u:any) => u.username === user.username
+      );
+
     if(exists){
 
-    this.following = this.following.filter(
-      u => u.username !== user.username
+      this.following =
+        savedFollowing.filter(
+          (u:any) => u.username !== user.username
+        );
+
+      user.isFollowing = false;
+
+    } else {
+
+      user.isFollowing = true;
+      savedFollowing.push(user);
+      this.following = savedFollowing;
+
+    }
+
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify(this.following)
     );
-
-    user.isFollowing = false;
-
-  } else {
-
-    // SEGUIR
-    user.isFollowing = true;
-    this.following.push(user);
-
-  }
-
-    // GUARDAR
-    localStorage.setItem('following', JSON.stringify(this.following));
-
   }
 
 

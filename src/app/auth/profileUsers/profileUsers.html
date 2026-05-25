@@ -35,8 +35,21 @@
           <i class="bi" [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
         </button>
 
-        <button class="profile-btn-secondary-Follow" (click)="openFollowingModal()">Siguiendo</button> 
-        <button class="profile-btn-secondary-Followers" (click)="openFollowersModal()">Seguidores</button>
+        <button 
+          class="profile-btn-secondary-Follow" 
+          (click)="openFollowingModal()">
+
+          {{ following.length }}
+          Siguiendo
+        </button> 
+
+        <button 
+          class="profile-btn-secondary-Followers"
+          (click)="openFollowersModal()">
+
+          {{ followers.length }}
+          Seguidores
+        </button>
       </div>
 
       <!-- FAB -->
@@ -64,7 +77,6 @@
   <!-- GRID -->
   <!-- ============================= -->
   <div class="profile-posts-grid" *ngIf="posts.length > 0">
-
     <div class="profile-post-card" *ngFor="let post of posts">
 
       <!-- HOVER -->
