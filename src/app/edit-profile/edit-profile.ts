@@ -47,12 +47,39 @@ export class EditProfileComponent implements OnInit {
   // CARGAR USUARIO
   // =========================
   loadUser(){
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); //Users en sesión
+      const users = JSON.parse(localStorage.getItem('users') || '[]'); //Todos los users
 
-    this.name = user.name || '';
-    this.username = user.username || '';
-    this.avatar = user.avatar || '';
-    this.bio = user.bio || '';
+      // BUSCAR USER REAL ACTUALIZADO
+      const realUser = users.find((u: any) => {
+
+        return (
+          (u.id && currentUser.id && u.id === currentUser.id)
+          ||
+          (u.username === currentUser.username)
+        );
+
+      });
+
+      // SI EXISTE USER REAL
+      if(realUser){
+
+        this.name = realUser.name || '';
+        this.username = realUser.username || '';
+        this.avatar = realUser.avatar || '';
+        this.bio = realUser.bio || '';
+
+        // ACTUALIZAR currentUser
+        localStorage.setItem('currentUser', JSON.stringify(realUser)
+        );
+      }
+
+    } catch (error) {
+      console.error('Error cargando usuario', error);
+    }
+
+    
   }
 
   // =========================
@@ -149,23 +176,63 @@ export class EditProfileComponent implements OnInit {
 
 
   // =========================
-  // GUARDAR
+  // GUARDAR: 
+  // 1. Guardará el foto de perfil que desee insertar siempre y cuando no pase de los 5MB
+  // 2. MOdera los usuarios
   // =========================
   saveChanges(){
+    try{
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); //usuarios actuales
+      const users = JSON.parse(localStorage.getItem('users') || '[]'); //todos los usuarios
 
-    const updatedUser = {
-      name: this.name,
-      username: this.username,
-      avatar: this.avatar,
-      bio: this.bio
-    };
+      // NUEVO USER
+      const updatedUser = {
 
-    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-    alert('Perfil actualizado');
+        ...currentUser,
 
-    // IMPORTANTE: reemplaza historial (más pro)
-    this.router.navigate(['/profileUsers'], { replaceUrl: true });
+        name: this.name.trim(),
+        username: this.username.trim(),
+        avatar: this.avatar,
+        bio: this.bio.trim()
 
+      };
+
+      // ACTUALIZAR ARRAY
+      const updatedUsers = users.map((user: any) => {
+        const sameUser =
+
+          (
+            user.id &&
+            currentUser.id &&
+            user.id === currentUser.id
+          )
+
+          ||
+
+          (
+            user.username === currentUser.username
+          );
+
+        return sameUser ? updatedUser : user;
+
+      });
+
+      // GUARDAR
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      localStorage.setItem('currentUser',JSON.stringify(updatedUser));
+
+      alert('Perfil actualizado correctamente');
+
+      this.router.navigate(
+        ['/profileUsers'],
+        { replaceUrl: true }
+      );
+
+    }catch(error){
+      console.error(error);
+      alert('Error al guardar perfil');
+
+    }
   }
 
   // =========================

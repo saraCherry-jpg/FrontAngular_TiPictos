@@ -179,8 +179,8 @@
 
               <!-- AVATAR -->
               <div class="comment-avatar">
-                <img *ngIf="c.avatar" [src]="c.avatar">
-                <i *ngIf="!c.avatar" class="bi bi-person-circle"></i>
+                <img *ngIf="getUserAvatar(c.user)" [src]="getUserAvatar(c.user)">
+                <i *ngIf="!getUserAvatar(c.user)" class="bi bi-person-circle"></i>
               </div>
 
               <!-- CONTENIDO -->
@@ -315,26 +315,28 @@
 
     <h2>Seguidores</h2>
     <div class="follow-list">
-      <div class="follow-user-card" *ngFor="let follower of followers">
+      <div class="follow-user-card" *ngFor="let user of following">
 
         <div class="follow-user-info">
           <div class="follow-avatar">
-            <i class="bi bi-person-circle"></i>
+
+            <img *ngIf="getUserAvatar(user.username)" [src]="getUserAvatar(user.username)">
+            <i *ngIf="!getUserAvatar(user.username)" class="bi bi-person-circle"> </i>
           </div>
 
           <div>
-            <h4>{{ follower.name }}</h4>
-            <p>@{{ follower.username }}</p>
+            <h4>{{ getUserName(user.username) }}</h4>
+            <p>@{{ user.username }}</p>
           </div>
         </div>
 
         <div class="follow-actions">
-          <button class="follow-btn" [class.following]="follower.isFollowing"
-            (click)="followUser(follower)">
-            {{ follower.isFollowing ? 'Siguiendo' : 'Seguir' }}
+          <button class="follow-btn" [class.following]="user.isFollowing"
+            (click)="followUser(user)">
+            {{ user.isFollowing ? 'Siguiendo' : 'Seguir' }}
           </button>
 
-          <button class="remove-btn" (click)="removeFollower(follower)">Eliminar</button>
+          <button class="remove-btn" (click)="removeFollower(user)">Eliminar</button>
         </div>
       </div>
     </div>
@@ -376,13 +378,13 @@
           <div class="follow-user-info">
             <div class="follow-avatar">
 
-              <img *ngIf="user.avatar" [src]="user.avatar">
-              <i *ngIf="!user.avatar" class="bi bi-person-circle"> </i>
+              <img *ngIf="getUserAvatar(user.username)" [src]="getUserAvatar(user.username)">
+              <i *ngIf="!getUserAvatar(user.username)" class="bi bi-person-circle"> </i>
 
             </div>
 
             <div>
-              <h4>{{ user.name }}</h4>
+              <h4>{{ getUserName(user.username) }}</h4>
               <p>@{{ user.username }}</p>
             </div>
 

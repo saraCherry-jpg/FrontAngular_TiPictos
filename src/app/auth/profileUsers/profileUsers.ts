@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
 
   followers: any[] = [];
   following: any[] = [];
+  users: any[] = [];
   //user: any;
 
   
@@ -143,14 +144,60 @@ export class ProfileComponent implements OnInit {
 
   /*Cargar usuario y arrastra los datos*/
   loadUser() {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    console.log("USER:", user); //  DEBUG
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    this.name = user.name;
-    this.username = user.username;
-    this.avatar = user.avatar || '';
-    this.bio = user.bio || '';
+      this.users = JSON.parse(
+        localStorage.getItem('users') || '[]'
+      );
+
+      const realUser = this.users.find((u: any) => {
+
+        return (
+          (u.id && currentUser.id && u.id === currentUser.id)
+          ||
+          (u.username === currentUser.username)
+        );
+
+      });
+
+      if(realUser){
+
+        this.name = realUser.name || '';
+        this.username = realUser.username || '';
+        this.avatar = realUser.avatar || '';
+        this.bio = realUser.bio || '';
+
+        // REFRESCAR currentUser
+        localStorage.setItem('currentUser', JSON.stringify(realUser));
+      }
+
+    } catch(error){
+      console.error('Error cargando usuario', error);
+    }
+
   }
+
+
+  //datos del usuario
+  getUserData(username: string){
+    return this.users.find((u: any) => u.username === username);
+
+  }
+
+  //avatar o perfil
+  getUserAvatar(username: string): string {
+    const user = this.getUserData(username);
+    return user?.avatar || '';
+
+  }
+
+  //nombre del usuario
+  getUserName(username: string): string {
+    const user = this.getUserData(username);
+    return user?.name || username;
+  }
+
 
 
   //cargar el post
@@ -296,7 +343,7 @@ export class ProfileComponent implements OnInit {
       savedFollowing.push({
         name: user.name,
         username: user.username,
-        avatar: user.avatar || '',
+        avatar: user.avatar || '', //ojito aqui
         isFollowing: true
       });
 
@@ -308,7 +355,7 @@ export class ProfileComponent implements OnInit {
       savedFollowers.push({
         name: currentUser.name,
         username: currentUser.username,
-        avatar: currentUser.avatar || '',
+        avatar: currentUser.avatar || '', //ojito tambien aqui
         isFollowing: true
       });
 
@@ -459,8 +506,9 @@ export class ProfileComponent implements OnInit {
       id: Date.now(),
       text: this.newComment,
       user: this.username,
-      avatar: this.avatar,
       createdAt: new Date()
+
+      //avatar: this.avatar, //ojito con esto,  YA NO DEBE ESTAR AHI
     };
 
     post.comments.push(newComment); //Ya almcena de forma segura

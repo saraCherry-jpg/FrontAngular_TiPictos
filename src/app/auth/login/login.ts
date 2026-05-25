@@ -93,7 +93,13 @@ export class LoginComponent {
 
     // BUSCAR USUARIO REGISTRADO
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const userFound = users.find((u: any) => u.email === this.email);
+    //const userFound = users.find((u: any) => u.email === this.email); //murio
+
+    const userFound = users.find(
+      (u: any) =>
+      u.email.trim().toLowerCase() ===
+      this.email.trim().toLowerCase()
+    );
 
 
     // SI EL USUARIO NO EXISTE

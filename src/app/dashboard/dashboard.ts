@@ -14,8 +14,6 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class Dashboard implements OnInit {
-  postToDelete: any;
-
   //constructor
   constructor(private router: Router){}
 
@@ -23,6 +21,7 @@ export class Dashboard implements OnInit {
   //Para post
   activeModal: 'create' | 'preview' | 'edit' | null = null; // Seria el reemplazo de showCreatePost = false;
   posts: any[] = []; // POSTS
+  postToDelete: any;
 
   //inrtereaciones post 
   selectedPost: any = null;
@@ -42,6 +41,8 @@ export class Dashboard implements OnInit {
   suggestedUsers: any[] = [];
   followingUsers: any[] = [];
 
+  users: any[] = [];
+
 
 
   //_______________________________   METODOS   _____________________________________________________
@@ -49,10 +50,17 @@ export class Dashboard implements OnInit {
 
   //inicializa el dashboard
   ngOnInit(): void {
+
+    this.loadCurrentUser();
+
+    this.users =
+    JSON.parse(localStorage.getItem('users') || '[]');
+    /*
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     this.username = currentUser.username || '';
     this.avatar = currentUser.avatar || '';
+    */
 
     this.loadSuggestedUsers();
     this.loadFollowing();
@@ -62,6 +70,58 @@ export class Dashboard implements OnInit {
     this.loadTheme(); //carga el tema de la interfaz
 
   }
+
+
+
+  loadCurrentUser(){
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    const realUser = this.users.find((u:any) => {
+
+      return (
+        (u.id && currentUser.id && u.id === currentUser.id)
+        ||
+        (u.username === currentUser.username)
+      );
+
+    });
+
+    if(realUser){
+      this.currentUser = realUser;
+      this.username = realUser.username || '';
+      this.avatar = realUser.avatar || '';
+
+      localStorage.setItem('currentUser',JSON.stringify(realUser));
+
+    }
+
+  }
+
+
+  //PARA USER DATA:
+  getUserData(username: string){
+    return this.users.find(
+      (u:any) => u.username === username
+    );
+
+  }
+
+  //PARA AVATAR
+  getUserAvatar(username: string): string {
+    const user = this.getUserData(username);
+    return user?.avatar || '';
+
+  }
+
+
+  //NOMBRES:
+  getUserName(username: string): string {
+    const user = this.getUserData(username);
+    return user?.name || username;
+
+  }
+
 
 
 
@@ -206,7 +266,7 @@ export class Dashboard implements OnInit {
 
       post.comments.push({
       user: this.username,
-      avatar: this.avatar,
+      //avatar: this.avatar, //ESO YA NO DEBE VENIR
       text: this.newComment,
       createdAt: new Date()
 
@@ -281,7 +341,7 @@ export class Dashboard implements OnInit {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    this.suggestedUsers = users.filter(
+    this.suggestedUsers = this.users.filter(
       (user:any) =>
       user.username !== currentUser.username
 
@@ -411,7 +471,10 @@ export class Dashboard implements OnInit {
       user.isFollowing = true;
 
       // GUARDAR FOLLOWING
-      savedFollowing.push(user);
+      savedFollowing.push({
+        username: user.username,
+        isFollowing: true
+      });
 
       localStorage.setItem(
         followingKey,
@@ -420,9 +483,8 @@ export class Dashboard implements OnInit {
 
       // GUARDAR FOLLOWER
       savedFollowers.push({
-        name: currentUser.name,
         username: currentUser.username,
-        avatar: currentUser.avatar
+        isFollowing: true
       });
 
       localStorage.setItem(
@@ -488,6 +550,12 @@ export class Dashboard implements OnInit {
  
   goToProfile(){
     this.router.navigate(['/profileUsers']);
+  }
+
+
+  //___________________________________   ACCEDER AL DASHBOARD (AUTO-CARGA)   ________________________
+  goToDashboard(){
+    this.router.navigate(['/dashboard']);
   }
 
   //___________________________________________ Salir de Sesión / Cerrar Sesión / Logout ____________________________

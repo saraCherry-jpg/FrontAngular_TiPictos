@@ -14,7 +14,9 @@
     <!-- MENU -->
     <nav class="dashboard-menu">
 
-      <button class="dashboard-link active">
+      <button class="dashboard-link active"
+        (click)="goToDashboard()">
+
         <i class="bi bi-house-door-fill"></i>
         <span>Inicio</span>
       </button>
@@ -37,6 +39,7 @@
       <button
         class="dashboard-link"
         (click)="goToProfile()">
+
         <i class="bi bi-person-fill"></i>
         <span>Perfil</span>
       </button>
@@ -144,11 +147,19 @@
       <div class="suggest-info">
 
         <div class="suggest-avatar">
-          <i class="bi bi-person-circle"></i>
+          <img
+            *ngIf="getUserAvatar(user.username)"
+            [src]="getUserAvatar(user.username)"
+            alt="avatar">
+
+          <i 
+            *ngIf="!getUserAvatar(user.username)"
+            class="bi bi-person-circle">
+          </i>
         </div>
 
         <div>
-          <h4>{{ user.name }}</h4>
+          <h4>{{ getUserName(user.username) }}</h4>
           <p>@{{ user.username }}</p>
         </div>
 
@@ -319,11 +330,11 @@
               <div class="comment-avatar">
 
                 <img
-                  *ngIf="c.avatar"
-                  [src]="c.avatar">
+                  *ngIf="getUserAvatar(c.user)"
+                  [src]="getUserAvatar(c.user)">
 
                 <i
-                  *ngIf="!c.avatar"
+                  *ngIf="!getUserAvatar(c.user)"
                   class="bi bi-person-circle">
                 </i>
 

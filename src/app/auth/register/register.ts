@@ -124,10 +124,19 @@ exit: any;
     // CREAR NUEVO USUARIO
     const newUser = {
 
+      id: Date.now(), // ID ÚNICO  -->pto id pipipi
+
+
       name: this.name,
       username: this.username,
       email: this.email,
-      password: this.password
+      password: this.password,
+
+      avatar: '',
+      bio: '',
+      followers: [],
+      following: []
+
 
     };
 
