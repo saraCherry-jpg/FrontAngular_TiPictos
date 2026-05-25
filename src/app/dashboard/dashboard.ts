@@ -359,11 +359,20 @@ export class Dashboard implements OnInit {
       return;
     }
 
-    const storageKey =
-      `following_${currentUser.username}`;
+
+    // FOLLOWING DEL USUARIO ACTUAL
+    const followingKey =
+    `following_${currentUser.username}`;
 
     const savedFollowing =
-      JSON.parse(localStorage.getItem(storageKey) || '[]');
+    JSON.parse(localStorage.getItem(followingKey) || '[]');
+
+    // FOLLOWERS DEL USUARIO DESTINO
+    const followersKey =
+    `followers_${user.username}`;
+
+    const savedFollowers =
+    JSON.parse(localStorage.getItem(followersKey) || '[]');
 
     const exists = savedFollowing.some(
       (u:any) => u.username === user.username
@@ -372,14 +381,26 @@ export class Dashboard implements OnInit {
     // DEJAR DE SEGUIR
     if(exists){
 
+      // FOLLOWING
       const updatedFollowing =
         savedFollowing.filter(
           (u:any) => u.username !== user.username
         );
 
       localStorage.setItem(
-        storageKey,
+        followingKey,
         JSON.stringify(updatedFollowing)
+      );
+
+      // FOLLOWERS
+      const updatedFollowers =
+        savedFollowers.filter(
+          (u:any) => u.username !== currentUser.username
+        );
+
+      localStorage.setItem(
+        followersKey,
+        JSON.stringify(updatedFollowers)
       );
 
       user.isFollowing = false;
@@ -389,14 +410,28 @@ export class Dashboard implements OnInit {
       // SEGUIR
       user.isFollowing = true;
 
+      // GUARDAR FOLLOWING
       savedFollowing.push(user);
 
       localStorage.setItem(
-        storageKey,
+        followingKey,
         JSON.stringify(savedFollowing)
+      );
+
+      // GUARDAR FOLLOWER
+      savedFollowers.push({
+        name: currentUser.name,
+        username: currentUser.username,
+        avatar: currentUser.avatar
+      });
+
+      localStorage.setItem(
+        followersKey,
+        JSON.stringify(savedFollowers)
       );
     }
 
+    // RECARGAS
     this.loadFollowing();
     this.loadPosts();
   }

@@ -4,7 +4,7 @@
   <div class="profile-header">
 
     <button class="profile-btn-secondary-logout" 
-      *ngIf="!showCreatePost" (click)="logout()">
+      *ngIf="!showCreatePost" (click)="openLogoutModal()">
       Cerrar sesión
     </button>
 
@@ -266,6 +266,40 @@
 
     </div>
   </div>
+
+
+
+  <!-- ============================= -->
+  <!-- CONFIRM LOGOUT -->
+  <!-- ============================= -->
+  <div class="confirm-modal" *ngIf="showLogoutConfirm">
+    <div class="confirm-card">
+
+      <h3>¿Desea salir de TiPictos?</h3>
+      <p>Tu sesión actual se cerrará</p>
+
+      <div class="confirm-actions">
+        <button 
+          class="cancel"
+          (click)="showLogoutConfirm = false">
+
+          Cancelar
+        </button>
+
+        <button 
+          class="delete"
+          (click)="confirmLogout()">
+
+          Salir
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
 
 
 <!-- ============================= -->

@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class ProfileComponent implements OnInit {
-
   // VARIABLES
   name: string = '';
   username: string = '';
@@ -26,9 +25,12 @@ export class ProfileComponent implements OnInit {
   postToDelete: any;
   newComment: string = '';
 
+  //Vistas modal
   //Nuevas variables para trabajar con Follow y followers
   showFollowersModal: boolean = false;
   showFollowingModal: boolean = false;
+  showLogoutConfirm: boolean = false;
+
 
   followers: any[] = [];
   following: any[] = [];
@@ -53,6 +55,10 @@ export class ProfileComponent implements OnInit {
     //localStorage.removeItem('allPosts'); //prueba BORRO TODO LOS POST QUE TENIA PUBLICADO XD
     this.loadUser();
     this.loadFollowers();
+
+    window.addEventListener('storage', () => {
+      this.loadFollowers();
+    });
 
     //Carga el perfil
     this.loadPosts(); //allPosts
@@ -156,6 +162,8 @@ export class ProfileComponent implements OnInit {
     const currentUser =
     JSON.parse(localStorage.getItem('currentUser') || '{}');
 
+  
+    // SIGUIENDO
     this.following =
       JSON.parse(
         localStorage.getItem(
@@ -163,12 +171,15 @@ export class ProfileComponent implements OnInit {
         ) || '[]'
       );
 
+  
+    // SEGUIDORES
     this.followers =
       JSON.parse(
         localStorage.getItem(
           `followers_${currentUser.username}`
         ) || '[]'
       );
+
 
 
     /*
@@ -229,50 +240,123 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    const storageKey =`following_${currentUser.username}`;
-    const savedFollowing =  JSON.parse(localStorage.getItem(storageKey) || '[]');
+    const followingKey =
+    `following_${currentUser.username}`;
+
+    const savedFollowing =
+    JSON.parse(
+      localStorage.getItem(followingKey) || '[]'
+    );
+
+    const followersKey =
+    `followers_${user.username}`;
+
+    const savedFollowers =
+    JSON.parse(
+      localStorage.getItem(followersKey) || '[]'
+    );
 
     const exists =
-      savedFollowing.some(
-        (u:any) => u.username === user.username
-      );
+    savedFollowing.some(
+      (u:any) => u.username === user.username
+    );
 
+  
+    // DEJAR DE SEGUIR
     if(exists){
 
-      this.following =
-        savedFollowing.filter(
-          (u:any) => u.username !== user.username
-        );
+      const updatedFollowing =
+      savedFollowing.filter(
+        (u:any) => u.username !== user.username
+      );
+
+      localStorage.setItem(
+        followingKey,
+        JSON.stringify(updatedFollowing)
+      );
+
+      const updatedFollowers =
+      savedFollowers.filter(
+        (u:any) => u.username !== currentUser.username
+      );
+
+      localStorage.setItem(
+        followersKey,
+        JSON.stringify(updatedFollowers)
+      );
 
       user.isFollowing = false;
 
     } else {
 
+    
+      // SEGUIR
       user.isFollowing = true;
-      savedFollowing.push(user);
-      this.following = savedFollowing;
 
+      savedFollowing.push({
+        name: user.name,
+        username: user.username,
+        avatar: user.avatar || '',
+        isFollowing: true
+      });
+
+      localStorage.setItem(
+        followingKey,
+        JSON.stringify(savedFollowing)
+      );
+
+      savedFollowers.push({
+        name: currentUser.name,
+        username: currentUser.username,
+        avatar: currentUser.avatar || '',
+        isFollowing: true
+      });
+
+      localStorage.setItem(
+        followersKey,
+        JSON.stringify(savedFollowers)
+      );
     }
-
-    localStorage.setItem(
-      storageKey,
-      JSON.stringify(this.following)
-    );
+    this.loadFollowers();
   }
 
 
 // ELIMINAR FOLLOWER
 // =====================================
   removeFollower(user: any){
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser') || '{}');
 
+    // ELIMINAR DEL FOLLOWERS ACTUAL
     this.followers =
       this.followers.filter(
         u => u.username !== user.username
       );
 
     localStorage.setItem(
-      'followers',
+      `followers_${currentUser.username}`,
       JSON.stringify(this.followers)
+    );
+
+  
+    // ELIMINAR TAMBIÉN DEL FOLLOWING DEL OTRO USUARIO
+  
+    const otherFollowingKey =
+      `following_${user.username}`;
+
+    const otherFollowing =
+      JSON.parse(
+        localStorage.getItem(otherFollowingKey) || '[]'
+      );
+
+    const updatedOtherFollowing =
+      otherFollowing.filter(
+        (u:any) => u.username !== currentUser.username
+      );
+
+    localStorage.setItem(
+      otherFollowingKey,
+      JSON.stringify(updatedOtherFollowing)
     );
   }
 
@@ -464,9 +548,23 @@ export class ProfileComponent implements OnInit {
 
   // CERRAR SESIÓN
   logout(){
-
     localStorage.removeItem('currentUser');
     alert("Sesión cerrada");
+    this.router.navigate(['/login']);
+
+  }
+
+  // =============================
+  // MODAL CERRAR SESIÓN
+  // =============================
+
+  openLogoutModal(){
+    this.showLogoutConfirm = true;
+  }
+
+  confirmLogout(){
+    localStorage.removeItem('currentUser');
+    this.showLogoutConfirm = false;
     this.router.navigate(['/login']);
 
   }
